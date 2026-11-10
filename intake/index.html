@@ -112,10 +112,7 @@ label.field:has(+ [data-key="devices.antivirus_product"]),label.field:has(+ [dat
 </header>
 <div id="saveState"></div>
 <main>
-  <div id="restored">
-    <strong>Your saved progress was restored.</strong> This form autosaves on this device as you type, so a crash, a closed tab, or a dead battery loses nothing.
-    <div style="margin-top:8px"><button type="button" class="small" id="clearTop">Start over — clear saved answers</button></div>
-  </div>
+  
 
   <div class="card notice">
     <h2>⚠ Read this first — what NOT to send us</h2>
@@ -124,6 +121,10 @@ label.field:has(+ [data-key="devices.antivirus_product"]),label.field:has(+ [dat
     <p>This questionnaire asks only about <strong>how your firm operates</strong> — staff, software, devices, vendors, and office setup. That is all we need to build your plan, and it is all we are willing to receive. If something in this list tempts you to attach a client document, stop and just describe it in general terms instead ("about 300 active client files," not the files).</p>
     <p>Why we are strict about this: federal law (Internal Revenue Code §§7216 and 6713) restricts when a preparer may share tax return information, and sharing it with us is never necessary for this service. Keeping it out of both our systems protects you and protects us.</p>
     <p>If you realize you have sent us taxpayer data by mistake, tell us the same day. We delete it, log the deletion, and confirm to you in writing.</p>
+  </div>
+  <div id="restored">
+    <strong>Your saved progress was restored.</strong> This form autosaves on this device as you type, so a crash, a closed tab, or a dead battery loses nothing.
+    <div style="margin-top:8px"><button type="button" class="small" id="clearTop">Start over — clear saved answers</button></div>
   </div>
 
   <div class="card">
@@ -205,7 +206,7 @@ const FIELD_LABELS = {
   clause_status:"Contract includes a data-protection / safeguards clause?",
   clause_location:"Where (agreement, section, addendum)", evidence_reviewed:"Security evidence reviewed, if any",
   intake_channels:"How clients send you documents", intake_detail:"Details (if Other, or anything unusual)",
-  status:"Status", methods:"Methods used (app, text code, key…)", pending_enrollments:"Anyone not yet enrolled?",
+  status:"Status", methods:"Methods used (app, text code, key…)", pending_enrollments:"Anyone not yet enrolled?", who:"Whom has access",
   personal_detail:"Explain if yes", encryption_status:"Encryption status", existing_wisp_status:"Status", existing_wisp_detail:"Details"
 };
 const SYSTEM_LABELS = {email:"Email", tax_software:"Tax software", portal:"Client portal", banking:"Banking",
