@@ -115,7 +115,7 @@
   <div class="card" id="bookingCard">
     <h2>Step 2 — pick your verification call time</h2>
     <p>After your answers come in, we verify them with you on one call — a real person, going through your answers one by one, before anything is written. That call is part of the service; it isn't optional, because it's what makes the plan true. <strong>You call us</strong> at the start of the hour you pick — and the verification is done with the person who filled out the form (see "Who should fill out this form" above), so book an hour when that person can be on the phone.</p>
-    <p>Verification calls run <strong>Tuesday through Thursday mornings, Eastern Time — one firm per hour</strong>, at 8, 9, 10, and 11 AM. When a morning fills up it stops being offered, and the next open morning is shown instead. Pick yours:</p>
+    <p>Verification calls run <strong>Tuesday through Thursday mornings, Eastern Time — one firm per hour</strong>, at 8, 9, 10, and 11 AM. <strong>December:</strong> Monday through Thursday, 8 AM to 4 PM (closed for lunch 1–2), with slots at 8, 9, 10, 11, 12, 2, and 3 — Christmas week and New Year's week, calls run Monday and Tuesday only. When a morning fills up it stops being offered, and the next open morning is shown instead. Pick yours:</p>
     <div id="slotPicker"></div>
     <label class="field"><span>Best callback number for this call <span class="req">*</span></span><input type="text" id="bkPhone"></label>
     <label class="field"><span>Email for your booking confirmation <span class="req">*</span></span><input type="text" id="bkEmail"></label>
@@ -145,7 +145,7 @@
 <details class="faq-item"><summary>What is my plan based on?</summary><p>The FTC Safeguards Rule itself — 16 CFR Part 314 — structured following the IRS&#x27;s Publications 4557 and 5708, with e-file incident-reporting clocks from Publication 1345. Every plan ships with a Basis &amp; Sources page: each part of your plan mapped to the paragraph of the rule it answers, the primary sources listed with links, and the date the citations were last verified against the eCFR and IRS.gov. You, your CPA, or your attorney can check any line against the source — that transparency is deliberate.</p></details>
 <details class="faq-item"><summary>How do I sign?</summary><p>Not on a website — by design. And note what carries the signature: your intake form carries no signature — it&#x27;s just your answers. The signature lives on the plan, where you adopt it as your firm&#x27;s Qualified Individual. The last page of the plan is an adoption/signature page: signature line, printed name, title, firm, and date, under a short adoption statement — that you adopt the plan as QI and that its factual statements are true as verified on the review call. After we&#x27;ve reviewed the plan together, you sign one of two ways: (a) print the page, sign it, and return a scan or a clear phone photo; or (b) sign the PDF with any e-signature tool your firm already uses and return the signed PDF. The signed copy is filed in your firm&#x27;s packet and in your evidence binder, so the signed version is the version of record. The engagement letter is signed the same way.</p></details>
 <details class="faq-item"><summary>What if the rules change?</summary><p>We watch the sources monthly — the Safeguards Rule on the eCFR, FTC and Federal Register announcements, IRS Publications 4557 and 5708, IRS Security Summit releases, and the state laws in your plan&#x27;s notification matrix — with a deep re-verification every October before PTIN season. If a change affects your plan, it reaches you as a dated, versioned plan amendment under the Safeguards Year, explained in plain English, for your signature the same way as the original adoption; your signed plan is never silently edited, and your packet keeps every version. Your annual review then re-issues the full plan incorporating everything — so no client is ever more than a year behind the current rule, and the amendments cover the space between.</p></details>
-<details class="faq-item"><summary>What if I miss my verification call time?</summary><p>Life happens, and the policy is written down so nobody has to guess. Your slot is the full hour you picked — it&#x27;s yours, and running a few minutes late inside that hour is fine: just call in when you&#x27;re ready. If we haven&#x27;t heard from you in the first 15 minutes, we&#x27;ll try you once at the number you gave us. If we can&#x27;t connect, there is no charge and no penalty — your slot simply releases, and you can pick the next open morning yourself from the booking link we send you; verification calls run Tuesday through Thursday mornings, one firm per hour, and the picker shows the next morning with room. The same fairness runs the other way: if we&#x27;re still with the firm ahead of you when you call, leave a message and we will call you back inside your booked morning. Your intake answers sit exactly as you sent them the whole time — a missed call never touches them.</p></details>
+<details class="faq-item"><summary>What if I miss my verification call time?</summary><p>Life happens, and the policy is written down so nobody has to guess. Your slot is the full hour you picked — it&#x27;s yours, and running a few minutes late inside that hour is fine: just call in when you&#x27;re ready. If we haven&#x27;t heard from you in the first 15 minutes, we&#x27;ll try you once at the number you gave us. If we can&#x27;t connect, there is no charge and no penalty — your slot simply releases, and you can pick the next open morning yourself from the booking link we send you; verification calls run Tuesday through Thursday mornings, one firm per hour, and the picker shows the next morning with room. In December, calls run Monday through Thursday, 8 AM to 4 PM (closed for lunch 1–2), and Monday and Tuesday only in the Christmas and New Year's weeks. The same fairness runs the other way: if we&#x27;re still with the firm ahead of you when you call, leave a message and we will call you back inside your booked morning. Your intake answers sit exactly as you sent them the whole time — a missed call never touches them.</p></details>
 </section>
 </main>
 <footer>
@@ -437,11 +437,18 @@ function clearSaved(){
   document.getElementById("saveState").textContent = "Saved answers cleared from this browser.";
 }
 
-/* ---------- booking: slot picker (Tue–Thu mornings ET, one firm per hour) ---------- */
+/* ---------- booking: slot picker (call slots ET, one firm per hour; December Mon–Thu 8–4, lunch 1–2, holiday weeks Mon–Tue) ---------- */
 const BOOKED = {};
 const BOOKING_KEY = "wisp-intake-booking-v1";
 const BK_DAYS = [2, 3, 4];               /* getDay(): Tuesday, Wednesday, Thursday */
 const BK_HOURS = [8, 9, 10, 11];
+const BK_DEC_DAYS = [1, 2, 3, 4];        /* December 2026: Monday–Thursday */
+const BK_DEC_HOURS = [8, 9, 10, 11, 12, 14, 15];   /* 8 AM–4 PM, closed for lunch 1–2 */
+const BK_CLOSED = ["2026-12-23", "2026-12-24", "2026-12-25", "2026-12-30", "2026-12-31", "2027-01-01"];
+function bkIsDec(d){ return d.getFullYear() === 2026 && d.getMonth() === 11; }
+function bkDays(d){ return bkIsDec(d) ? BK_DEC_DAYS : BK_DAYS; }
+function bkHours(d){ return bkIsDec(d) ? BK_DEC_HOURS : BK_HOURS; }
+function bkHourLabel(h){ return h === 12 ? "12:00 PM" : h > 12 ? (h - 12) + ":00 PM" : h + ":00 AM"; }
 let bookingPick = null;                  /* {date: "YYYY-MM-DD", hour: 8|9|10|11} */
 function isoDay(d){ const p = n => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()); }
 function fmtDay(iso){ const parts = iso.split("-").map(Number); return new Date(parts[0], parts[1]-1, parts[2]).toLocaleDateString("en-US", {weekday:"long", month:"long", day:"numeric", year:"numeric"}); }
@@ -451,20 +458,20 @@ function renderSlots(){
   let h = ""; let shown = 0;
   for(let i = 0; i < 21 && shown < 9; i++){
     const d = new Date(today); d.setDate(today.getDate() + i);
-    if(!BK_DAYS.includes(d.getDay())) continue;
     const iso = isoDay(d);
+    if(!bkDays(d).includes(d.getDay()) || BK_CLOSED.includes(iso)) continue;
     const taken = BOOKED[iso] || [];
-    if(BK_HOURS.every(hr => taken.includes(hr))) continue;   /* a full morning is not offered */
+    if(bkHours(d).every(hr => taken.includes(hr))) continue;   /* a full morning is not offered */
     shown++;
-    h += '<div class="day"><h3>' + esc(fmtDay(iso)) + '</h3><div class="slotbtns">' + BK_HOURS.map(hr =>
+    h += '<div class="day"><h3>' + esc(fmtDay(iso)) + '</h3><div class="slotbtns">' + bkHours(d).map(hr =>
       taken.includes(hr)
-        ? '<button type="button" class="small" disabled>' + hr + ":00 AM — taken</button>"
-        : '<button type="button" class="small" data-slot="' + iso + "|" + hr + '" aria-pressed="' + (bookingPick && bookingPick.date === iso && bookingPick.hour === hr ? "true" : "false") + '">' + hr + ":00 AM ET</button>"
+        ? '<button type="button" class="small" disabled>' + bkHourLabel(hr) + " — taken</button>"
+        : '<button type="button" class="small" data-slot="' + iso + "|" + hr + '" aria-pressed="' + (bookingPick && bookingPick.date === iso && bookingPick.hour === hr ? "true" : "false") + '">' + bkHourLabel(hr) + " ET</button>"
     ).join("") + "</div></div>";
   }
   box.innerHTML = h || "<p>No mornings are open in the next three weeks — email us and we will offer you the next one.</p>";
   const echo = document.getElementById("bookingEcho");
-  echo.textContent = bookingPick ? "Your pick: " + fmtDay(bookingPick.date) + ", " + bookingPick.hour + ":00–" + (bookingPick.hour+1) + ":00 AM ET. It is held for your firm alone when you finish below." : "";
+  echo.textContent = bookingPick ? "Your pick: " + fmtDay(bookingPick.date) + ", " + bkHourLabel(bookingPick.hour) + "–" + bkHourLabel(bookingPick.hour + 1) + " ET. It is held for your firm alone when you finish below." : "";
 }
 function saveBooking(){
   try{ localStorage.setItem(BOOKING_KEY, JSON.stringify({pick: bookingPick,
@@ -497,7 +504,7 @@ document.getElementById("submitBtn").addEventListener("click", function(){
   const errors = validate(answers);
   const bkPhone = document.getElementById("bkPhone").value.trim();
   const bkEmail = document.getElementById("bkEmail").value.trim();
-  if(!bookingPick) errors.push("Step 2: please pick your verification call slot (Tuesday–Thursday mornings).");
+  if(!bookingPick) errors.push("Step 2: please pick your verification call slot (call days: Tuesday–Thursday mornings; December Monday–Thursday, 8 AM–4 PM).");
   if(!bkPhone) errors.push("Step 2: please give the best callback number for the verification call.");
   if(!bkEmail) errors.push("Step 2: please give an email for your booking confirmation.");
   const errBox = document.getElementById("errors");
@@ -533,7 +540,7 @@ document.getElementById("submitBtn").addEventListener("click", function(){
     "<p>You answered <strong>" + counts.answered + " of " + SCHEMA.questions.length + " questions</strong>." +
     (counts.missing.length ? " Unanswered (optional) questions: " + counts.missing.join(", ") + " — we will confirm those with you on the review call rather than assume anything." : " Every question was answered.") + "</p>" +
     "<p><strong>Keep this file — it is your copy of exactly what you sent.</strong> Send it to us the way we arranged together (email or your portal message), and keep your copy: it is the same file we build your plan from, word for word.</p>" +
-    "<p><strong>Your verification call: " + esc(fmtDay(bookingPick.date)) + ", " + bookingPick.hour + ":00–" + (bookingPick.hour+1) + ":00 AM ET.</strong> You call us at the start of your hour — the number is confirmed with your booking. Your slot is the full hour — it's yours. Running a few minutes late is fine: call in any time inside your hour. If we haven't heard from you in the first 15 minutes, we'll try you once at the number you gave us. If we can't connect, there's no charge and no penalty — your slot simply releases and you can pick the next open morning in the slot picker on this page. And if we're still with the firm ahead of you when you call, please leave a message — we will call you back inside your booked morning.</p>" +
+    "<p><strong>Your verification call: " + esc(fmtDay(bookingPick.date)) + ", " + bkHourLabel(bookingPick.hour) + "–" + bkHourLabel(bookingPick.hour + 1) + " ET.</strong> You call us at the start of your hour — the number is confirmed with your booking. Your slot is the full hour — it's yours. Running a few minutes late is fine: call in any time inside your hour. If we haven't heard from you in the first 15 minutes, we'll try you once at the number you gave us. If we can't connect, there's no charge and no penalty — your slot simply releases and you can pick the next open morning in the slot picker on this page. And if we're still with the firm ahead of you when you call, please leave a message — we will call you back inside your booked morning.</p>" +
     "<p>A second small file, <strong>" + esc(slug) + "-booking.json</strong>, downloaded with your answers — send it along too. It holds only your firm name, contact, and your chosen slot.</p>" +
     "<p>Note: this form carries no signature — it is your answers only. The signature lives on your plan, where you adopt it as your firm's Qualified Individual after the read-back call.</p>" +
     '<p>Your answers also remain autosaved in this browser until you clear them: <button type="button" class="small" id="clearAfter">Clear saved answers from this browser</button></p>';
