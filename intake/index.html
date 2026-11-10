@@ -259,7 +259,7 @@ function renderForm(){
   for(const section of SCHEMA.sections){
     h += '<h2 class="section">' + esc(section) + "</h2>";
     for(const q of bySection[section] || []){
-      h += '<div class="q" data-q="' + q.n + '"><p class="prompt"><span class="n">' + q.n + ".</span>"esc(q.prompt) + "</p>";
+      h += '<div class="q" data-q="' + q.n + '"><p class="prompt"><span class="n">' + q.n + ".</span>" + esc(q.prompt) + "</p>";
       if(q.type === "object" && q.subfields && q.subfields.length){
         for(const sf of q.subfields || []){
           h += '<label class="field"><span>' + esc(labelFor(sf.key)) + "" + "</span></label>" + controlHTML(q, sf);
