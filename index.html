@@ -39,7 +39,7 @@ a{color:inherit}
 .serif{font-family:"Cormorant Garamond",Georgia,serif}
 
 /* update banner */
-.update-banner{position:relative;background:#1f4e79;color:#ffffff;text-align:center;padding:10px 48px 10px 16px;font-size:.88rem;line-height:1.5}
+.update-banner{position:relative;background:#1f4e79;color:#ffffff;text-align:center;padding:17px 52px 17px 16px;font-size:1.02rem;line-height:1.55}
 .update-banner p{margin:0 auto;max-width:1000px}
 .update-banner a{color:#ffffff;text-decoration:underline;text-underline-offset:2px;font-weight:700}
 .update-banner a:hover{color:var(--sky)}
@@ -48,7 +48,7 @@ a{color:inherit}
 
 /* top bar */
 .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
-.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.topbar-in{height:12px}
 .brand{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--text)}
 .brand span{color:var(--blue)}
 .brand small{display:block;letter-spacing:.08em;text-transform:none;font-weight:500;color:var(--muted);font-size:.78rem;margin-top:1px}
@@ -176,11 +176,8 @@ footer a:hover{border-color:#ffffff}
   <button class="banner-close" id="bannerClose" type="button" aria-label="Dismiss update notice">×</button>
 </div>
 
-<header class="topbar">
-  <div class="wrap topbar-in">
-    <div class="brand">WispTrust <span>·</span> <small>MVP Forge LLC</small></div>
-    <a class="btn btn-gold btn-sm" href="mailto:wisptrust@gmail.com?subject=Join%20the%20founding%20list%20—%20WispTrust">Join the founding list</a>
-  </div>
+<header class="topbar" aria-hidden="true">
+  <div class="wrap topbar-in"></div>
 </header>
 
 <!-- HERO -->
