@@ -122,7 +122,7 @@
   <div class="card" id="bookingCard">
     <h2>Step 2 — Pick your verification call time</h2>
     <p>After your answers come in, we verify them with you on one call — a real person, going through your answers one by one, before anything is written. That call is part of the service; it isn't optional, because it's what makes the plan true. <strong>You call us</strong> at the start of the hour you pick — and the verification is done with the person who filled out the form (see "Who should fill out this form" above), so book an hour when that person can be on the phone.</p>
-    <p>Verification calls run <strong>Tuesday through Thursday mornings, Eastern Time — one firm per hour</strong>, at 8, 9, 10, and 11 AM. <strong>December:</strong> Monday through Thursday, 8 AM to 4 PM (closed for lunch 1–2), with slots at 8, 9, 10, 11, 12, 2, and 3 — Christmas week and New Year's week, calls run Monday and Tuesday only. When a morning fills up it stops being offered, and the next open morning is shown instead. Pick yours:</p>
+    <p>Verification calls run <strong>Tuesday through Thursday mornings, Eastern Time — one firm per hour</strong>, at 8, 9, 10, and 11 AM. <strong>From our opening day — Monday, November 30 — through December:</strong> Monday through Thursday, 8 AM to 4 PM (closed for lunch 1–2), with slots at 8, 9, 10, 11, 12, 2, and 3 — Christmas week and New Year's week, calls run Monday and Tuesday only. When a morning fills up it stops being offered, and the next open morning is shown instead. Pick yours:</p>
     <div id="slotPicker"></div>
     <label class="field"><span>Best callback number for this call <span class="req">*</span></span><input type="text" id="bkPhone"></label>
     <label class="field"><span>Email for your booking confirmation <span class="req">*</span></span><input type="text" id="bkEmail"></label>
@@ -462,7 +462,7 @@ const BK_HOURS = [8, 9, 10, 11];
 const BK_DEC_DAYS = [1, 2, 3, 4];        /* December 2026: Monday–Thursday */
 const BK_DEC_HOURS = [8, 9, 10, 11, 12, 14, 15];   /* 8 AM–4 PM, closed for lunch 1–2 */
 const BK_CLOSED = ["2026-12-23", "2026-12-24", "2026-12-25", "2026-12-30", "2026-12-31", "2027-01-01"];
-function bkIsDec(d){ return d.getFullYear() === 2026 && d.getMonth() === 11; }
+function bkIsDec(d){ const iso = isoDay(d); return iso >= "2026-11-30" && iso <= "2026-12-31"; }   /* extended-hours season: opening day Mon Nov 30 through Dec 31 */
 function bkDays(d){ return bkIsDec(d) ? BK_DEC_DAYS : BK_DAYS; }
 function bkHours(d){ return bkIsDec(d) ? BK_DEC_HOURS : BK_HOURS; }
 function bkHourLabel(h){ return h === 12 ? "12:00 PM" : h > 12 ? (h - 12) + ":00 PM" : h + ":00 AM"; }
