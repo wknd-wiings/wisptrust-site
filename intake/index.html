@@ -245,7 +245,7 @@ function controlHTML(q, sf){
 
 function listRowHTML(q, idx){
   const fields = (q.subfields || []).map(sf =>
-    '<label class="field"><span>' + esc(labelFor(sf.key)) + (sf.required ? ' <span class="req">*</span>' : "") + '</span>' +
+    '<label class="field"><span>' + esc(labelFor(sf.key)) + "" + '</span>' +
     controlHTML(null, Object.assign({}, sf, {key: sf.key})) + '</label>').join("");
   return '<div class="rowbox" data-row="' + idx + '"><div class="grid">' + fields + '</div>' +
     '<button type="button" class="small" data-remove-row="1">Remove this row</button></div>';
@@ -259,11 +259,10 @@ function renderForm(){
   for(const section of SCHEMA.sections){
     h += '<h2 class="section">' + esc(section) + "</h2>";
     for(const q of bySection[section] || []){
-      h += '<div class="q" data-q="' + q.n + '"><p class="prompt"><span class="n">' + q.n + ".</span>" + esc(q.prompt) +
-           (q.required ? ' <span class="req">*</span>' : "") + "</p>";
+      h += '<div class="q" data-q="' + q.n + '"><p class="prompt"><span class="n">' + q.n + ".</span>"esc(q.prompt) + "</p>";
       if(q.type === "object" && q.subfields && q.subfields.length){
         for(const sf of q.subfields || []){
-          h += '<label class="field"><span>' + esc(labelFor(sf.key)) + (sf.required ? ' <span class="req">*</span>' : "") + "</span></label>" + controlHTML(q, sf);
+          h += '<label class="field"><span>' + esc(labelFor(sf.key)) + "" + "</span></label>" + controlHTML(q, sf);
         }
       } else if(q.type === "list_object"){
         h += '<div data-rows="' + q.n + '">' + listRowHTML(q, 0) + '</div>' +
