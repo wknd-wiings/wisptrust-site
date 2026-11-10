@@ -12,8 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f5f8fc;
-  --bg-2:#e9f1f9;
+  --bg:#1d5fa8;
+  --bg-2:#18548f;
+  --sky:#a9cdf2;
+  --on-bg:#ffffff;
+  --on-bg-2:rgba(255,255,255,.86);
+  --on-bg-muted:rgba(255,255,255,.66);
   --surface:#ffffff;
   --card:#ffffff;
   --card-2:#eef4fb;
@@ -43,20 +47,20 @@ a{color:inherit}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;border-radius:999px;transition:.18s ease;white-space:nowrap}
 .btn-gold{background:linear-gradient(180deg,#2f83dd,#1565c0);color:#ffffff;padding:13px 24px;font-size:.95rem;box-shadow:0 8px 24px rgba(21,101,192,.22);border:1px solid rgba(255,255,255,.25)}
 .btn-gold:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.btn-ghost{border:1px solid var(--line);color:var(--text);padding:12px 22px;font-size:.95rem;background:rgba(21,101,192,.04)}
-.btn-ghost:hover{border-color:var(--blue-dim);background:rgba(21,101,192,.06)}
+.btn-ghost{border:1px solid rgba(255,255,255,.55);color:#ffffff;padding:12px 22px;font-size:.95rem;background:rgba(255,255,255,.08)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.85);background:rgba(255,255,255,.14)}
 .btn-sm{padding:10px 18px;font-size:.88rem}
 
 /* hero */
-.hero{padding:84px 0 64px;background:radial-gradient(900px 420px at 50% -80px, rgba(21,101,192,.16), transparent 65%), linear-gradient(180deg,var(--bg-2),var(--bg));border-bottom:1px solid var(--line-soft);text-align:center}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:rgba(21,101,192,.07);color:var(--blue-2);padding:7px 14px;border-radius:999px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
-.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--blue);display:inline-block}
-.hero h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1.02;letter-spacing:-.01em;margin:26px auto 20px;max-width:900px}
-.hero h1 em{font-style:italic;color:var(--blue-2)}
-.hero p.lead{max-width:820px;margin:0 auto;color:var(--text-2);font-size:1.08rem;line-height:1.75}
+.hero{padding:84px 0 64px;background:radial-gradient(900px 420px at 50% -80px, rgba(255,255,255,.14), transparent 65%), linear-gradient(180deg,var(--bg-2),var(--bg));border-bottom:1px solid var(--line-soft);text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.12);color:#ffffff;padding:7px 14px;border-radius:999px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--sky);display:inline-block}
+.hero h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1.02;letter-spacing:-.01em;margin:26px auto 20px;max-width:900px;color:var(--on-bg)}
+.hero h1 em{font-style:italic;color:var(--sky)}
+.hero p.lead{max-width:820px;margin:0 auto;color:var(--on-bg-2);font-size:1.08rem;line-height:1.75}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
-.founding-note{max-width:640px;margin:22px auto 0;background:rgba(21,101,192,.08);border:1px solid var(--line);border-radius:12px;padding:13px 18px;font-size:.92rem;color:var(--blue-2);line-height:1.55}
-.hero small.micro{display:block;margin-top:18px;color:var(--muted);font-size:.86rem}
+.founding-note{max-width:640px;margin:22px auto 0;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.32);border-radius:12px;padding:13px 18px;font-size:.92rem;color:var(--on-bg);line-height:1.55}
+.hero small.micro{display:block;margin-top:18px;color:var(--on-bg-muted);font-size:.86rem}
 .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:820px;margin:44px auto 0;text-align:left}
 .stat{background:var(--card);border:1px solid var(--line-soft);border-radius:14px;padding:16px 18px}
 .stat b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.5rem;line-height:1;color:var(--blue-2);font-weight:600}
@@ -65,19 +69,19 @@ a{color:inherit}
 /* sections */
 section{padding:78px 0}
 section.alt{background:var(--bg-2);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
-.kicker{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:800;margin:0 0 12px}
-h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin:0 0 14px}
-.sub{color:var(--text-2);max-width:760px;font-size:1.02rem}
+.kicker{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sky);font-weight:800;margin:0 0 12px}
+h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin:0 0 14px;color:var(--on-bg)}
+.sub{color:var(--on-bg-2);max-width:760px;font-size:1.02rem}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .grid-problem{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
-.problem-card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);padding:26px 26px 22px;box-shadow:0 14px 36px rgba(18,52,92,.10)}
+.problem-card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);padding:26px 26px 22px;box-shadow:0 14px 36px rgba(10,35,70,.22)}
 .problem-card h3{margin:0 0 10px;font-size:1.02rem;line-height:1.35}
 .problem-card p{margin:0;color:var(--text-2);font-size:.96rem;line-height:1.7}
 .num{font-family:"Cormorant Garamond",Georgia,serif;color:var(--blue);font-size:1.1rem;font-weight:700;letter-spacing:.06em;display:block;margin-bottom:10px}
 
 /* what you get */
 .deliver{margin-top:36px;display:grid;grid-template-columns:1.25fr .85fr;gap:22px;align-items:start}
-.panel{background:var(--card);border:1px solid var(--line-soft);border-radius:20px;padding:30px;box-shadow:0 18px 44px rgba(18,52,92,.12)}
+.panel{background:var(--card);border:1px solid var(--line-soft);border-radius:20px;padding:30px;box-shadow:0 18px 44px rgba(10,35,70,.25)}
 .panel.gold{border-color:var(--line);background:linear-gradient(180deg,#e9f2fd,#dbeafa)}
 .panel h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.9rem;font-weight:600;margin:0 0 6px;line-height:1.1}
 .panel .panel-sub{color:var(--muted);font-size:.94rem;margin:0 0 20px}
@@ -92,7 +96,7 @@ h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clam
 
 /* pricing */
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
-.price-card{background:var(--card);border:1px solid var(--line-soft);border-radius:20px;padding:30px 26px;box-shadow:0 18px 44px rgba(18,52,92,.12);display:flex;flex-direction:column}
+.price-card{background:var(--card);border:1px solid var(--line-soft);border-radius:20px;padding:30px 26px;box-shadow:0 18px 44px rgba(10,35,70,.25);display:flex;flex-direction:column}
 .price-card.featured{border-color:var(--line);background:linear-gradient(180deg,#eef5fd,#ffffff);position:relative}
 .badge{position:absolute;top:-11px;left:24px;background:var(--blue);color:#ffffff;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:5px 10px;border-radius:999px}
 .price-card h3{margin:0;font-size:.92rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.4;min-height:2.6em}
@@ -103,18 +107,18 @@ h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clam
 .price-card ul{list-style:none;margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line-soft);display:grid;gap:9px;color:var(--text-2);font-size:.92rem}
 .price-card ul li{padding-left:16px;position:relative}
 .price-card ul li::before{content:"—";position:absolute;left:0;color:var(--blue)}
-.commitment{margin-top:22px;border:1px solid var(--line);background:rgba(21,101,192,.06);border-radius:16px;padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+.commitment{margin-top:22px;border:1px solid rgba(255,255,255,.30);background:rgba(255,255,255,.08);border-radius:16px;padding:22px 24px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
 .commitment .seal{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--blue-2);font-family:"Cormorant Garamond",Georgia,serif;font-size:1.3rem;background:var(--card)}
-.commitment p{margin:0;color:var(--text-2);font-size:.97rem;line-height:1.7}
-.commitment strong{color:var(--text)}
+.commitment p{margin:0;color:var(--on-bg-2);font-size:.97rem;line-height:1.7}
+.commitment strong{color:var(--on-bg)}
 
 /* steps */
 .steps{margin-top:36px;display:grid;gap:0}
 .step{display:grid;grid-template-columns:72px 1fr;gap:20px;padding:26px 0;border-bottom:1px solid var(--line-soft)}
 .step:last-child{border-bottom:none}
 .step-no{width:56px;height:56px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.6rem;color:var(--blue-2);font-weight:600}
-.step h3{margin:4px 0 8px;font-size:1.08rem}
-.step p{margin:0;color:var(--text-2);max-width:760px}
+.step h3{margin:4px 0 8px;font-size:1.08rem;color:var(--on-bg)}
+.step p{margin:0;color:var(--on-bg-2);max-width:760px}
 
 /* FAQ */
 .faq-list{margin-top:30px;display:grid;gap:12px}
@@ -128,19 +132,19 @@ h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clam
 .faq-a p{margin:0 0 12px}.faq-a p:last-child{margin-bottom:0}
 
 /* final CTA */
-.final{padding:84px 0;text-align:center;background:radial-gradient(760px 360px at 50% 0%, rgba(21,101,192,.14), transparent 65%), var(--bg-2);border-top:1px solid var(--line-soft)}
+.final{padding:84px 0;text-align:center;background:radial-gradient(760px 360px at 50% 0%, rgba(255,255,255,.12), transparent 65%), var(--bg-2);border-top:1px solid var(--line-soft)}
 .final h2{max-width:780px;margin-left:auto;margin-right:auto}
-.final p{max-width:700px;margin:0 auto;color:var(--text-2);font-size:1.03rem}
+.final p{max-width:700px;margin:0 auto;color:var(--on-bg-2);font-size:1.03rem}
 .final .founding-note{margin-top:26px}
 .final .hero-ctas{margin-top:28px}
 
-footer{border-top:1px solid var(--line-soft);padding:34px 0 44px;background:#e9f1f9}
+footer{border-top:1px solid var(--line-soft);padding:34px 0 44px;background:#14467c}
 .footer-in{display:grid;gap:14px}
-.footer-brand{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800}
-.footer-brand span{color:var(--blue)}
-.disclaimer{color:var(--muted);font-size:.88rem;line-height:1.7;max-width:900px}
-footer a{color:var(--blue-2);text-decoration:none;border-bottom:1px solid var(--line)}
-footer a:hover{border-color:var(--blue)}
+.footer-brand{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#ffffff}
+.footer-brand span{color:var(--sky)}
+.disclaimer{color:var(--on-bg-muted);font-size:.88rem;line-height:1.7;max-width:900px}
+footer a{color:var(--sky);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
+footer a:hover{border-color:var(--sky)}
 
 @media (max-width:900px){
   .grid-2,.grid-problem,.deliver,.pricing-grid{grid-template-columns:1fr}
@@ -176,7 +180,7 @@ footer a:hover{border-color:var(--blue)}
       <a class="btn btn-ghost" href="#included">See what's included</a>
     </div>
     <div class="founding-note">Founding list now forming — service opens November 19. Joining the list is free and carries no obligation.</div>
-    <small class="micro">Email <a href="mailto:wisptrust@gmail.com" style="color:var(--blue-2)">wisptrust@gmail.com</a> to join. &nbsp;·&nbsp; No client data is ever requested or accepted. Intake covers systems and controls only.</small>
+    <small class="micro">Email <a href="mailto:wisptrust@gmail.com" style="color:var(--sky)">wisptrust@gmail.com</a> to join. &nbsp;·&nbsp; No client data is ever requested or accepted. Intake covers systems and controls only.</small>
 
     <div class="hero-stats">
       <div class="stat"><b>16 CFR 314</b><span>Built clause-by-clause against the FTC Safeguards Rule, from IRS Publication 5708's outline.</span></div>
@@ -322,7 +326,7 @@ footer a:hover{border-color:var(--blue)}
       <p><strong>Accuracy commitment:</strong> if any citation, deadline, or rule statement in your plan is wrong as of its issue date, we correct it and re-issue free; if we can't, we refund the build fee. That's a promise about our work — the only kind of promise a document service can honestly make.</p>
     </div>
 
-    <p style="text-align:center;color:var(--muted);font-size:.9rem;margin-top:22px">Pricing shown for when the service opens November 19. Joining the founding list today is free and carries no obligation.</p>
+    <p style="text-align:center;color:var(--on-bg-muted);font-size:.9rem;margin-top:22px">Pricing shown for when the service opens November 19. Joining the founding list today is free and carries no obligation.</p>
     <div style="text-align:center;margin-top:14px">
       <a class="btn btn-gold" href="mailto:wisptrust@gmail.com?subject=Join%20the%20founding%20list%20—%20WispTrust">Join the founding list</a>
     </div>
@@ -333,15 +337,14 @@ footer a:hover{border-color:var(--blue)}
 <section class="alt" id="how">
   <div class="wrap">
     <p class="kicker">How it works</p>
-    <h2>Five steps, about two hours of your time.</h2>
-    <p class="sub">Your time is the questionnaire, one interview, and one review call. Our drafting happens between the calls.</p>
+    <h2>Four steps, under two hours of your time.</h2>
+    <p class="sub">Your time is the questionnaire and one phone interview. Our drafting happens after the call.</p>
 
     <div class="steps">
       <div class="step"><div class="step-no">1</div><div><h3>Questionnaire — about 30 minutes</h3><p>Operational facts only: staff, software, devices, vendors, office setup. The form itself tells you what never to send — no client data, no credentials.</p></div></div>
-      <div class="step"><div class="step-no">2</div><div><h3>Interview — 60–75 minutes, video</h3><p>We go through your answers, verify MFA, encryption, and backups together, and surface the gaps.</p></div></div>
+      <div class="step"><div class="step-no">2</div><div><h3>Interview — 60–75 minutes, by phone</h3><p>We go through your answers, verify MFA, encryption, and backups together, and read back every factual claim. You confirm what's true; anything that isn't stays on the gap list with a fix and a date.</p></div></div>
       <div class="step"><div class="step-no">3</div><div><h3>Draft</h3><p>We write your plan around your firm and prepare your gap list.</p></div></div>
-      <div class="step"><div class="step-no">4</div><div><h3>Review call — 30 minutes</h3><p>We read back every factual claim together. You confirm what's true; anything that isn't stays on the gap list with a fix and a date.</p></div></div>
-      <div class="step"><div class="step-no">5</div><div><h3>Issue</h3><p>Signed plan, incident response plan, and evidence binder delivered. If you choose Safeguards Year, your annual review is already on the calendar.</p></div></div>
+      <div class="step"><div class="step-no">4</div><div><h3>Issue</h3><p>Signed plan, incident response plan, and evidence binder delivered. If you choose Safeguards Year, your annual review is already on the calendar.</p></div></div>
     </div>
   </div>
 </section>
@@ -376,7 +379,7 @@ footer a:hover{border-color:var(--blue)}
 
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">How long does it take? <span class="chev">+</span></button>
-        <div class="faq-a"><p>Your time: about 30 minutes on the questionnaire, one 60–75 minute interview, and one 30-minute review call. Our drafting happens between the calls. From a completed questionnaire to a signed plan is normally a matter of business days — we'll confirm the current timeline when you join the founding list.</p></div>
+        <div class="faq-a"><p>Your time: about 30 minutes on the questionnaire, and one 60–75 minute interview by phone. Our drafting happens after the call. From a completed questionnaire to a signed plan is normally a matter of business days — we'll confirm the current timeline when you join the founding list.</p></div>
       </div>
 
       <div class="faq-item">
@@ -412,14 +415,14 @@ footer a:hover{border-color:var(--blue)}
     <div class="hero-ctas">
       <a class="btn btn-gold" href="mailto:wisptrust@gmail.com?subject=Join%20the%20founding%20list%20—%20WispTrust" style="font-size:1.02rem;padding:15px 30px">Join the founding list</a>
     </div>
-    <p style="font-size:.9rem;color:var(--muted);margin-top:16px">Write to <a href="mailto:wisptrust@gmail.com" style="color:var(--blue-2)">wisptrust@gmail.com</a> — tell us your firm size and we'll hold your place.</p>
+    <p style="font-size:.9rem;color:var(--on-bg-muted);margin-top:16px">Write to <a href="mailto:wisptrust@gmail.com" style="color:var(--sky)">wisptrust@gmail.com</a> — tell us your firm size and we'll hold your place.</p>
   </div>
 </div>
 
 <footer>
   <div class="wrap footer-in">
     <div class="footer-brand">WispTrust <span>· MVP Forge LLC</span></div>
-    <div style="color:var(--text-2);font-size:.92rem">Contact: <a href="mailto:wisptrust@gmail.com">wisptrust@gmail.com</a></div>
+    <div style="color:var(--on-bg-2);font-size:.92rem">Contact: <a href="mailto:wisptrust@gmail.com">wisptrust@gmail.com</a></div>
     <p class="disclaimer">This service provides general information and documentation support — not legal, tax, or security-engineering advice. No document can guarantee compliance or prevent a breach.</p>
     <p class="disclaimer" style="font-size:.82rem">Citations refer to the FTC Safeguards Rule (16 CFR Part 314), IRS Publication 5708, and Form W-12 as published. Have your attorney review your finished plan for your circumstances.</p>
   </div>
