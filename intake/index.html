@@ -55,7 +55,10 @@
   @media (max-width:640px){.rowbox .grid{grid-template-columns:1fr}}
   button{font:inherit;cursor:pointer;border-radius:5px;border:1px solid var(--navy);
          padding:8px 16px;background:var(--white);color:var(--navy)}
-  button.primary{background:var(--navy);color:var(--white);font-weight:600;padding:12px 26px;font-size:16px}
+  button.primary{background:linear-gradient(180deg,#1565c0,#0f56a8);color:var(--white);font-weight:700;padding:16px 36px;font-size:17px;border:1px solid #0b3d75;border-radius:10px;box-shadow:0 6px 18px rgba(15,86,168,.35),inset 0 1px 0 rgba(255,255,255,.25);letter-spacing:.2px}
+  button.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  button.primary:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(15,86,168,.3)}
+  .submitbar .hint{margin-top:16px}
   button.small{padding:4px 10px;font-size:13px;border-color:var(--slate-light);color:var(--slate)}
   .submitbar{text-align:center;padding:10px 0 4px}
   .submitbar .hint{color:rgba(255,255,255,.82)}
@@ -460,6 +463,8 @@ function fmtDay(iso){ const parts = iso.split("-").map(Number); return new Date(
 function renderSlots(){
   const box = document.getElementById("slotPicker");
   const today = new Date(); today.setHours(0, 0, 0, 0);
+  const OPEN_DAY = new Date(2026, 10, 30);   /* service opens Mon Nov 30, 2026 — no call slots before then */
+  if(today < OPEN_DAY) today.setTime(OPEN_DAY.getTime());
   let h = ""; let shown = 0;
   for(let i = 0; i < 21 && shown < 9; i++){
     const d = new Date(today); d.setDate(today.getDate() + i);
