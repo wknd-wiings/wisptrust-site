@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WispTrust — Client Intake Questionnaire</title>
+<style>
+  :root{
+    --navy:#0e2a47; --navy2:#16406b; --slate:#43536a; --slate-light:#6b7a8d;
+    --line:#d3dbe4; --bg:#f2f5f8; --panel:#e9eff5; --ink:#22303e; --white:#ffffff;
+    --ok:#14532d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:"Segoe UI",Calibri,Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5}
+  header{background:var(--navy);color:var(--white);padding:26px 20px 22px}
+  header .wrap{max-width:860px;margin:0 auto}
+  header h1{margin:0 0 4px;font-size:24px;font-weight:600;letter-spacing:.2px}
+  header p{margin:0;color:#c7d5e4;font-size:14px}
+  main{max-width:860px;margin:0 auto;padding:20px}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:8px;
+        padding:18px 20px;margin:0 0 18px}
+  .notice{border-left:5px solid var(--navy);background:var(--panel)}
+  .notice h2{margin:0 0 8px;font-size:17px;color:var(--navy)}
+  .notice p{margin:0 0 10px}
+  .notice p:last-child{margin-bottom:0}
+  h2.section{font-size:18px;color:var(--navy);margin:26px 0 10px;padding-bottom:6px;
+             border-bottom:2px solid var(--navy)}
+  .q{padding:12px 0;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:none}
+  .q .prompt{font-weight:600;margin:0 0 8px}
+  .q .prompt .n{color:var(--navy2);margin-right:6px}
+  .req{color:var(--navy2);font-weight:700}
+  .hint{color:var(--slate-light);font-size:13px;margin:4px 0 0}
+  label.field{display:block;margin:0 0 10px}
+  label.field span{display:block;font-size:13px;color:var(--slate);margin-bottom:3px}
+  input[type=text],input[type=number],select,textarea{
+    width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:5px;
+    font:inherit;background:var(--white);color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--navy2);outline-offset:0;border-color:var(--navy2)}
+  textarea{min-height:64px;resize:vertical}
+  .radios{display:flex;gap:16px;flex-wrap:wrap;margin:2px 0 6px}
+  .radios label{display:flex;gap:6px;align-items:center;font-size:14px}
+  .checks{display:flex;gap:8px 18px;flex-wrap:wrap;margin:2px 0 6px}
+  .checks label{display:flex;gap:6px;align-items:center;font-size:14px}
+  .states{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:4px 10px}
+  table.systems{border-collapse:collapse;width:100%;margin:4px 0 8px}
+  table.systems th,table.systems td{border:1px solid var(--line);padding:6px 8px;text-align:left;font-size:14px}
+  table.systems th{background:var(--panel);color:var(--navy);font-weight:600}
+  .rowbox{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:0 0 10px;background:#fbfcfe}
+  .rowbox .grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  @media (max-width:640px){.rowbox .grid{grid-template-columns:1fr}}
+  button{font:inherit;cursor:pointer;border-radius:5px;border:1px solid var(--navy);
+         padding:8px 16px;background:var(--white);color:var(--navy)}
+  button.primary{background:var(--navy);color:var(--white);font-weight:600;padding:12px 26px;font-size:16px}
+  button.small{padding:4px 10px;font-size:13px;border-color:var(--slate-light);color:var(--slate)}
+  .submitbar{text-align:center;padding:10px 0 4px}
+  #errors{display:none;border:1px solid #9c2b2b;background:#fdf0f0;color:#7c1d1d;border-radius:8px;padding:14px 18px;margin:0 0 18px}
+  #confirmation{display:none;border:2px solid var(--navy);background:var(--white);border-radius:8px;padding:20px 22px;margin:0 0 18px}
+  #confirmation h2{margin:0 0 8px;color:var(--ok);font-size:19px}
+  #confirmation .ref{font-size:17px;font-weight:700;color:var(--navy)}
+  #restored{display:none;background:var(--panel);border:1px solid var(--line);border-radius:8px;
+            padding:12px 16px;margin:0 0 18px;color:var(--navy)}
+  #saveState{color:var(--slate-light);font-size:13px;text-align:right;max-width:860px;margin:0 auto;padding:0 20px}
+  #bookingCard h2{margin:0 0 8px;font-size:17px;color:var(--navy)}
+  .day{border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:0 0 10px;background:#fbfcfe}
+  .day h3{margin:0 0 6px;font-size:15px;color:var(--navy)}
+  .slotbtns{display:flex;gap:8px;flex-wrap:wrap}
+  .slotbtns button[aria-pressed="true"]{background:var(--navy);color:var(--white);font-weight:600}
+  .faq{max-width:860px;margin:26px auto 0;padding:0 20px}
+  .faq h2{font-size:19px;color:var(--navy);margin:0 0 4px}
+  .faq .faq-sub{color:var(--slate);font-size:13.5px;margin:0 0 12px}
+  details.faq-item{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:0 0 8px}
+  details.faq-item summary{cursor:pointer;font-weight:600;color:var(--navy);font-size:14.5px}
+  details.faq-item p{font-size:13.5px;line-height:1.55;color:#222;margin:8px 0 4px}
+  footer{max-width:860px;margin:0 auto;padding:6px 20px 34px;color:var(--slate-light);
+         font-size:13px;text-align:center}
+  footer .badge{color:var(--slate);font-weight:600;letter-spacing:.4px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>WispTrust — Client Intake Questionnaire</h1>
+    <p>The information we need to build your firm's Written Information Security Plan. This form runs entirely in your browser — nothing is transmitted while you type.</p>
+  </div>
+</header>
+<div id="saveState"></div>
+<main>
+  <div id="restored">
+    <strong>Your saved progress was restored.</strong> This form autosaves on this device as you type, so a crash, a closed tab, or a dead battery loses nothing.
+    <div style="margin-top:8px"><button type="button" class="small" id="clearTop">Start over — clear saved answers</button></div>
+  </div>
+
+  <div class="card notice">
+    <h2>⚠ Read this first — what NOT to send us</h2>
+    <p><strong>Do not send us any taxpayer or client data. Ever.</strong></p>
+    <p>That means: no client names, no Social Security numbers, no tax returns or anything from a return, no bank details, no passwords or login codes, and not your EFIN or PTIN numbers (we will only ever ask whether you <em>have</em> them).</p>
+    <p>This questionnaire asks only about <strong>how your firm operates</strong> — staff, software, devices, vendors, and office setup. That is all we need to build your plan, and it is all we are willing to receive. If something in this list tempts you to attach a client document, stop and just describe it in general terms instead ("about 300 active client files," not the files).</p>
+    <p>Why we are strict about this: federal law (Internal Revenue Code §§7216 and 6713) restricts when a preparer may share tax return information, and sharing it with us is never necessary for this service. Keeping it out of both our systems protects you and protects us.</p>
+    <p>If you realize you have sent us taxpayer data by mistake, tell us the same day. We delete it, log the deletion, and confirm to you in writing.</p>
+  </div>
+
+  <div class="card">
+    <h2>Who should fill out this form</h2>
+    <p><strong>The person who fills out this form needs to be the person who does the verification with WispTrust.</strong></p>
+    <p>Your verification call walks through these answers one by one with the person who gave them — that conversation is the heart of this service, and it only works firsthand. If part of your firm is handled by someone else — an office manager, a spouse, your IT person — either complete those sections together before you submit, or have that person beside you on the call.</p>
+    <p>If you own the firm and a member of your staff completes this form, read every answer before the call: you will be asked to stand behind them, and the finished plan carries your signature as the firm's Qualified Individual.</p>
+  </div>
+
+  <div id="errors"></div>
+  <div id="confirmation"></div>
+  <form id="intake" novalidate></form>
+
+  <div class="card" id="bookingCard">
+    <h2>Step 2 — pick your verification call time</h2>
+    <p>After your answers come in, we verify them with you on one call — a real person, going through your answers one by one, before anything is written. That call is part of the service; it isn't optional, because it's what makes the plan true. <strong>You call us</strong> at the start of the hour you pick — and the verification is done with the person who filled out the form (see "Who should fill out this form" above), so book an hour when that person can be on the phone.</p>
+    <p>Verification calls run <strong>Tuesday through Thursday mornings, Eastern Time — one firm per hour</strong>, at 8, 9, 10, and 11 AM. When a morning fills up it stops being offered, and the next open morning is shown instead. Pick yours:</p>
+    <div id="slotPicker"></div>
+    <label class="field"><span>Best callback number for this call <span class="req">*</span></span><input type="text" id="bkPhone"></label>
+    <label class="field"><span>Email for your booking confirmation <span class="req">*</span></span><input type="text" id="bkEmail"></label>
+    <p class="hint" id="bookingEcho"></p>
+    <p><strong>How the hour works:</strong> Your slot is the full hour — it's yours. Running a few minutes late is fine: call in any time inside your hour. If we haven't heard from you in the first 15 minutes, we'll try you once at the number you gave us. If we can't connect, there's no charge and no penalty — your slot simply releases and you can pick the next open morning in the slot picker on this page. And if we're still with the firm ahead of you when you call, please leave a message — we will call you back inside your booked morning.</p>
+  </div>
+
+  <div class="submitbar">
+    <button type="button" class="primary" id="submitBtn">Finish — download my answers + booking files</button>
+    <p class="hint">Submitting downloads two small JSON files — your answers and your booking (firm name, contact, and your chosen slot only) — and shows your submission reference on this page. Nothing is uploaded anywhere.</p>
+  </div>
+<section class="faq">
+  <h2>Questions firms ask us</h2>
+  <p class="faq-sub">Straight answers, in writing — most firms find theirs here before they ever reach us. Anything else, bring it to your verification call and we will answer it there.</p>
+<details class="faq-item"><summary>Do I really need one?</summary><p>If your firm handles customer financial information — and a tax practice does by definition — the FTC Safeguards Rule (16 CFR Part 314) requires a written information security program with a designated Qualified Individual. On the IRS side, Form W-12 line 11 asks every paid preparer to attest to having a written plan when applying for or renewing a PTIN, and all PTINs expire December 31. IRS Publications 4557 and 5708 explain the expectation in the IRS&#x27;s own words. So for a practicing firm, yes — this is a standing duty, not an optional extra.</p></details>
+<details class="faq-item"><summary>I&#x27;m a one-person firm — does this apply to me?</summary><p>A smaller version of it does, and we&#x27;ll tell you exactly which parts. Under 16 CFR 314.6, firms maintaining information on fewer than 5,000 consumers are exempt from a few written-program elements (the written incident response plan requirement and certain testing provisions, among them). The core duties are not exempted at any size: having a program, designating a Qualified Individual, running safeguards, overseeing vendors — and the FTC&#x27;s breach-notification duty in 314.4(j) applies to every firm. The IRS attestation has no small-firm exemption. Your plan states your 314.6 position in writing, so what applies to you is documented, not assumed.</p></details>
+<details class="faq-item"><summary>What do you need from me?</summary><p>One interview of about 60–75 minutes, led by us, about how your firm operates: your people and roles, your software, your devices, your vendors, your office setup. Plus, for a handful of settings (multi-factor authentication, encryption, backups), a look at the settings screen — with anything private covered — so the plan states facts, not recollections. That&#x27;s the whole input.</p></details>
+<details class="faq-item"><summary>Will you ever see my clients&#x27; tax returns?</summary><p>No. Never asked for, never accepted. We do not collect client names, Social Security numbers, tax returns or anything from them, bank details, passwords, or your EFIN/PTIN numbers. Our intake is built to refuse that data, and if anything of the kind ever arrives by mistake, it is deleted the same day, the deletion is logged, and we confirm it to you in writing. Federal law (Internal Revenue Code §§7216 and 6713) restricts sharing return information — and sharing it with us is never necessary for this service.</p></details>
+<details class="faq-item"><summary>How long does it take?</summary><p>About a week, start to finish — five business days, intake to signed plan. The stages: when your intake comes in, you get an instant on-screen and email confirmation with your reference number and answer count. Within one business day we complete our receipt check and send the scheduling email for your verification call, noting anything still to confirm. The verification call (60–75 minutes) is booked at your slot, targeted within 2–3 business days of intake. Your plan is delivered within 2 business days after that call — it&#x27;s generated from your verified answers and then passes a human verification before it goes out. The read-back call follows within 2 business days of delivery, and signature happens at or right after that call. One honesty note for peak season: in the December PTIN crush, calls are scheduled at the first available slot — your plan still follows within two business days of your call, but we won&#x27;t promise a calendar the booking slots can&#x27;t keep.</p></details>
+<details class="faq-item"><summary>What does it cost, all-in?</summary><p>Flat, and the same in writing as on the phone: the Core Build is $549 for a firm of 1–3 staff, $749 for 4–10 staff. That includes the interview, the risk assessment, the tailored plan, the incident response plan, the training pack, the evidence binder, and the review call. After that, the optional Safeguards Year — annual review, updates when rules or your firm change, and incident support — is $49/month or $490/year. If you already have a plan, a review of it is $199. No hourly billing and no surprise add-ons; anything optional is chosen by you, in the engagement letter, before work starts.</p></details>
+<details class="faq-item"><summary>Why not a $39 template?</summary><p>A template is a document written for a hypothetical firm; the work of matching it to your actual software, devices, vendors, and practices — the risk assessment, the inventories, the verification — is still entirely yours, and that is most of the job. What we sell is the finished work product: built from your answers, with your unverified items listed honestly as gaps instead of written up as facts, and a read-back call so you sign something true. If you will genuinely finish a template yourself, it&#x27;s a fair option; if it would sit unfinished, it isn&#x27;t a plan.</p></details>
+<details class="faq-item"><summary>I already have an IT person — isn&#x27;t this theirs?</summary><p>Your IT person runs your technology; this is the documentation layer they typically don&#x27;t produce: the written risk assessment, the vendor register with contract clauses checked, the Qualified Individual&#x27;s annual report, the incident plan with its reporting clocks. The Safeguards Rule requires a written program under a named QI — a document, not a device setting. Your IT person actually makes our verification step easier: several answers are confirmed with their help. We document what they do; we don&#x27;t replace them.</p></details>
+<details class="faq-item"><summary>What happens if I get breached anyway?</summary><p>First, honesty: no plan prevents every breach, and anyone who guarantees that is misrepresenting the product. What the plan gives you is the response, ready before you need it: a contact card (attorney, insurer, bank, IRS liaison), a quick card for the first hour, and the reporting clocks spelled out — the IRS stakeholder liaison by the next business day, the FTC within 30 days if the event involves 500 or more consumers&#x27; unencrypted information, your states&#x27; notifications per the matrix built for your client states. After an incident, firms are judged on what they can show: their program, their evidence, and their response. The plan is exactly that record.</p></details>
+<details class="faq-item"><summary>Who is my Qualified Individual?</summary><p>You are — we recommend the owner hold the designation, and the plan is built to support the owner in it: the designation document, the annual QI report to sign off, the training and review rhythm. We never serve as a firm&#x27;s Qualified Individual; that accountability has to live inside the firm, and our job is to make it manageable.</p></details>
+<details class="faq-item"><summary>What happens next December?</summary><p>If you&#x27;re on the Safeguards Year: we re-run the annual review with you, update the plan for whatever changed — staff, software, rules — refresh the QI annual report for your sign-off, and your PTIN attestation is again a true statement because the plan behind it is current. If you&#x27;re not on the Safeguards Year, the plan is yours to maintain, and the annual review is available whenever you want it.</p></details>
+<details class="faq-item"><summary>Is this legal advice?</summary><p>No. We are not a law firm, and this service is documentation and administrative support: we build your written plan from your answers and the published requirements — the Safeguards Rule itself and the IRS&#x27;s publications. We do not represent you before the IRS or any agency, and we make no compliance determinations for your specific situations. Questions that need a legal call go to your attorney; most attorneys would rather review a finished, sourced plan than draft one from a blank page, and every plan we deliver includes a Basis &amp; Sources page to make that review easy.</p></details>
+<details class="faq-item"><summary>What is my plan based on?</summary><p>The FTC Safeguards Rule itself — 16 CFR Part 314 — structured following the IRS&#x27;s Publications 4557 and 5708, with e-file incident-reporting clocks from Publication 1345. Every plan ships with a Basis &amp; Sources page: each part of your plan mapped to the paragraph of the rule it answers, the primary sources listed with links, and the date the citations were last verified against the eCFR and IRS.gov. You, your CPA, or your attorney can check any line against the source — that transparency is deliberate.</p></details>
+<details class="faq-item"><summary>How do I sign?</summary><p>Not on a website — by design. And note what carries the signature: your intake form carries no signature — it&#x27;s just your answers. The signature lives on the plan, where you adopt it as your firm&#x27;s Qualified Individual. The last page of the plan is an adoption/signature page: signature line, printed name, title, firm, and date, under a short adoption statement — that you adopt the plan as QI and that its factual statements are true as verified on the review call. After we&#x27;ve reviewed the plan together, you sign one of two ways: (a) print the page, sign it, and return a scan or a clear phone photo; or (b) sign the PDF with any e-signature tool your firm already uses and return the signed PDF. The signed copy is filed in your firm&#x27;s packet and in your evidence binder, so the signed version is the version of record. The engagement letter is signed the same way.</p></details>
+<details class="faq-item"><summary>What if the rules change?</summary><p>We watch the sources monthly — the Safeguards Rule on the eCFR, FTC and Federal Register announcements, IRS Publications 4557 and 5708, IRS Security Summit releases, and the state laws in your plan&#x27;s notification matrix — with a deep re-verification every October before PTIN season. If a change affects your plan, it reaches you as a dated, versioned plan amendment under the Safeguards Year, explained in plain English, for your signature the same way as the original adoption; your signed plan is never silently edited, and your packet keeps every version. Your annual review then re-issues the full plan incorporating everything — so no client is ever more than a year behind the current rule, and the amendments cover the space between.</p></details>
+<details class="faq-item"><summary>What if I miss my verification call time?</summary><p>Life happens, and the policy is written down so nobody has to guess. Your slot is the full hour you picked — it&#x27;s yours, and running a few minutes late inside that hour is fine: just call in when you&#x27;re ready. If we haven&#x27;t heard from you in the first 15 minutes, we&#x27;ll try you once at the number you gave us. If we can&#x27;t connect, there is no charge and no penalty — your slot simply releases, and you can pick the next open morning yourself from the booking link we send you; verification calls run Tuesday through Thursday mornings, one firm per hour, and the picker shows the next morning with room. The same fairness runs the other way: if we&#x27;re still with the firm ahead of you when you call, leave a message and we will call you back inside your booked morning. Your intake answers sit exactly as you sent them the whole time — a missed call never touches them.</p></details>
+</section>
+</main>
+<footer>
+  <span class="badge">MVP Forge LLC</span> · WispTrust intake · Your answers autosave in this browser only; clearing them is your choice, above and on the confirmation.
+</footer>
+
+<script>
+"use strict";
+const SCHEMA = {"questions": [{"drives": ["Plan title and \u00a71.1 firm name", "\u00a72 profile: legal name / trade name", "QI annual report header", "Gap list header", "Operator client directory: main contact, phone, optional reminder email (operator file only; never printed in the plan)"], "key": "firm", "n": 1, "prompt": "Legal name of the firm, and any trade name (DBA)", "required": true, "rules": ["R-FILL-BASICS"], "section": "1. Your firm", "subfields": [{"key": "firm.legal_name", "required": true, "type": "text"}, {"key": "firm.dba", "required": false, "type": "text"}, {"key": "firm.contact_name", "required": true, "type": "text"}, {"key": "firm.contact_phone", "required": true, "type": "text"}, {"key": "firm.contact_email", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a72 profile: principal office"], "key": "firm.address", "n": 2, "prompt": "Principal office address", "required": true, "rules": ["R-FILL-BASICS"], "section": "1. Your firm", "type": "text"}, {"drives": ["\u00a71.3 scope locations sentence", "\u00a72 profile: other work locations (or 'None')", "Appendix B location column source", "Remote/home-working clauses when non-empty"], "key": "firm.other_locations", "n": 3, "prompt": "Do you or your staff work from home or other locations? List each location type", "required": true, "rules": ["R-LOCATIONS", "R-CONTRADICT-REMOTE"], "section": "1. Your firm", "type": "list_text"}, {"drives": ["\u00a72 profile context (operator file only; not asserted in plan body)"], "key": "firm.seasons_operated", "n": 4, "prompt": "How many tax seasons has the firm operated?", "required": false, "rules": [], "section": "1. Your firm", "type": "text"}, {"drives": ["\u00a72 profile: consumer count and 16 CFR 314.6 position line", "All four Small-firm position notes (kept for <5,000; replaced with firm-position notes at 5,000+)", "\u00a77.2 (d)(2) block: completed at 5,000+, marked not applicable below", "\u00a712 annual report framing"], "key": "firm.consumers_maintained", "n": 5, "prompt": "Roughly how many consumers' information do you maintain in total (current plus former clients whose records you still store)?", "required": true, "rules": ["R-SMALLFIRM"], "section": "1. Your firm", "type": "number"}, {"choices": "US state codes (2-letter)", "drives": ["\u00a78 incident-response state list", "\u00a714 state-law overlays (researched overlays inserted for TN/MA/NY/CA)", "Gap list: per-client completion item for every client state without a researched overlay \u2014 that state's law is never invented"], "key": "firm.client_states", "n": 6, "prompt": "In which states do your clients live? (State names only)", "required": true, "rules": ["R-STATES"], "section": "1. Your firm", "type": "multi_choice"}, {"drives": ["Staff count and size tier (1\u20133 / 4\u201310 / 11+) used across the plan", "Appendix A access matrix rows", "\u00a72 profile staff line", "Seasonal-staff clauses when any role is seasonal/temporary", "Gap flag when tier is 11+ (outside the standard priced tiers \u2014 confirm engagement scope)"], "key": "people.staff", "n": 7, "prompt": "List everyone who works for the firm \u2014 owners, employees, seasonal staff, contractors \u2014 with role only", "required": true, "rules": ["R-STAFF", "R-TIER"], "section": "2. People", "subfields": [{"key": "name", "type": "text"}, {"key": "role", "type": "text"}], "type": "list_object"}, {"drives": ["Plan header QI line", "\u00a73.1 designation", "\u00a716 adoption block", "QI annual report From line"], "key": "people.qi", "n": 8, "prompt": "Who will be the Qualified Individual? (We recommend the owner. Name and title)", "required": true, "rules": ["R-FILL-BASICS"], "section": "2. People", "subfields": [{"key": "people.qi_name", "required": true, "type": "text"}, {"key": "people.qi_title", "required": true, "type": "text"}], "type": "object"}, {"drives": ["\u00a73.4 succession clause (named interim QI; day threshold defaults to 3 business days if not supplied)"], "key": "people.qi_backup", "n": 9, "prompt": "Who else should direct and oversee the security program if the QI is unavailable?", "required": true, "rules": ["R-QI-SUCCESSION"], "section": "2. People", "subfields": [{"key": "people.qi_backup", "required": true, "type": "text"}, {"key": "people.qi_unavailable_days", "required": false, "type": "number"}], "type": "object"}, {"drives": ["\u00a76.1 physical access clause (named key/code holders, or cleaning-only-when-present wording)", "Risk register: physical access row when outsiders hold keys"], "key": "people.outside_access", "n": 10, "prompt": "Does anyone outside the firm (family members, a landlord, a cleaning service) have keys or codes to the office?", "required": true, "rules": ["R-PHYSICAL-ACCESS"], "section": "2. People", "subfields": [{"key": "people.outsiders_have_access", "required": true, "type": "yes_no"}, {"key": "people.outside_access_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.1 access-removal sentence (same-day stated only when answered yes)", "Gap list: access not removed same-day (or unknown) is a GAP \u2014 leaver access is an (e)/(c)(1) exposure, acute with seasonal staff"], "key": "people.access_removal", "n": 11, "prompt": "When someone leaves, how is their access removed today, and how fast?", "required": true, "rules": ["R-ACCESS-REMOVAL"], "section": "2. People", "subfields": [{"key": "people.access_removal_same_day", "required": true, "type": "yes_no_unknown"}, {"key": "people.access_removal_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["Appendix B hardware inventory rows", "\u00a76.2 encryption table device row", "Risk register: lost/stolen device row when laptops or portable devices exist"], "key": "devices.inventory", "n": 12, "prompt": "List each computer, laptop, tablet, and phone used for firm work: type, who uses it, where it is kept", "required": true, "rules": ["R-DEVICES"], "section": "3. Devices", "subfields": [{"key": "description", "type": "text"}, {"key": "used_by", "type": "text"}, {"key": "location", "type": "text"}, {"key": "info_stored", "required": false, "type": "text"}, {"key": "asset_tag", "required": false, "type": "text"}], "type": "list_object"}, {"drives": ["Shared/personal-device clause in \u00a76.1\u20136.2 and Appendix B note when used", "Gap list CONFIRM: personal-device encryption/management status must be evidenced before any control is asserted for those devices"], "key": "devices.personal", "n": 13, "prompt": "Are any personal devices used for firm work? Which, and for what?", "required": true, "rules": ["R-PERSONAL-DEVICES"], "section": "3. Devices", "subfields": [{"key": "devices.personal_used", "required": true, "type": "yes_no"}, {"key": "devices.personal_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.2 encryption table device row (product wording from detail)", "Gap list: 'some_off' = GAP (unencrypted device holding customer information, 314.4(c)(3)); any 'unknown' = CONFIRM \u2014 encryption is never asserted from an unknown"], "key": "devices.encryption", "n": 14, "prompt": "Is full-disk encryption turned on for each device? (BitLocker / FileVault) Answer per device: Yes / No / Don't know", "required": true, "rules": ["R-ENCRYPTION"], "section": "3. Devices", "subfields": [{"choices": ["all_on", "some_off", "some_unknown", "all_unknown"], "key": "devices.encryption_status", "required": true, "type": "choice"}, {"key": "devices.encryption_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.2 Security Six baseline sentence", "\u00a77.1 testing list (scan-report reviews only when AV present)", "Gap list: AV absent or unknown = GAP/CONFIRM"], "key": "devices.antivirus", "n": 15, "prompt": "Does every device have anti-virus/anti-malware with automatic updates? Which product?", "required": true, "rules": ["R-ANTIVIRUS"], "section": "3. Devices", "subfields": [{"key": "devices.antivirus_present", "required": true, "type": "yes_no_unknown"}, {"key": "devices.antivirus_product", "required": false, "type": "text"}, {"key": "devices.antivirus_auto_update", "required": false, "type": "yes_no_unknown"}], "type": "object"}, {"drives": ["\u00a76 safeguards wording on patching", "Gap list: not automatic or unknown = GAP/CONFIRM"], "key": "devices.auto_updates", "n": 16, "prompt": "Are operating systems and software set to update automatically?", "required": true, "rules": ["R-AUTO-UPDATES"], "section": "3. Devices", "type": "yes_no_unknown"}, {"drives": ["\u00a76.5 disposal clause (media sanitization stated only when wiped = yes)", "Gap list: devices kept unwiped or unknown = GAP (314.4(c)(6)) \u2014 disposal specifics are a named competitor miss"], "key": "devices.old_device_disposal", "n": 17, "prompt": "What happens to old devices when they are replaced? Are they wiped first?", "required": true, "rules": ["R-DISPOSAL-DEVICES"], "section": "3. Devices", "subfields": [{"key": "devices.wiped_before_disposal", "required": true, "type": "yes_no_unknown"}, {"key": "devices.old_device_disposal_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a72 profile tax software line (named product + deployment \u2014 never 'industry-standard software')", "Appendix C systems map row", "Appendix F vendor row (vendor company resolved from the clause library software profile; generic fallback when unlisted)", "Risk register vendor-breach asset names"], "key": "software.tax", "n": 18, "prompt": "Tax preparation software (name, and cloud or desktop)", "required": true, "rules": ["R-SOFTWARE-PROFILE"], "section": "4. Software and accounts", "subfields": [{"key": "software.tax_software", "required": true, "type": "text"}, {"choices": ["cloud", "desktop", "hosted", "unknown"], "key": "software.tax_deployment", "required": true, "type": "choice"}], "type": "object"}, {"drives": ["\u00a72 profile portal line (or 'None')", "\u00a76.1 customer-access sentence (portal named, or sentence omitted when none)", "Appendix C/F rows when present", "Gap list: no portal while email is a document channel = GAP (portal-only rule cannot be met)"], "key": "software.portal", "n": 19, "prompt": "Client portal, if any (name)", "required": true, "rules": ["R-PORTAL"], "section": "4. Software and accounts", "type": "text_none"}, {"drives": ["Appendix C row", "Encryption table email row", "MFA register email row label", "Risk register phishing asset name"], "key": "software.email_provider", "n": 20, "prompt": "Email provider (e.g., Google Workspace, Microsoft 365, other)", "required": true, "rules": ["R-SOFTWARE-PROFILE"], "section": "4. Software and accounts", "type": "text"}, {"drives": ["Appendix C/F rows when present", "\u00a76.7 logging systems list", "MFA register cloud-storage row when present"], "key": "software.cloud_storage", "n": 21, "prompt": "Cloud storage, if any (name)", "required": true, "rules": ["R-SOFTWARE-PROFILE"], "section": "4. Software and accounts", "type": "text_none"}, {"drives": ["Appendix C/F rows when present"], "key": "software.esignature", "n": 22, "prompt": "E-signature service, if any", "required": false, "rules": ["R-SOFTWARE-PROFILE"], "section": "4. Software and accounts", "type": "text_none"}, {"drives": ["\u00a76.1 shared-accounts sentence (prohibition stated as confirmed only when no sharing is reported; reported sharing = GAP and the plan states the exception honestly)", "MFA register password-manager row when present", "Gap list CONFIRM when unanswered"], "key": "software.passwords", "n": 23, "prompt": "Password manager, if any (name) \u2014 and if staff share passwords, how?", "required": false, "rules": ["R-PASSWORDS"], "section": "4. Software and accounts", "subfields": [{"key": "software.password_manager", "required": false, "type": "text_none"}, {"key": "software.password_sharing_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["Appendix C/F rows when present (payroll/bookkeeping vendors hold client data and belong in vendor oversight)"], "key": "software.bookkeeping", "n": 24, "prompt": "Bookkeeping/payroll software that touches client data, if any", "required": false, "rules": ["R-SOFTWARE-PROFILE"], "section": "4. Software and accounts", "type": "text_none"}, {"drives": ["\u00a76.3 secure-development clause: 'does not develop' variant vs. described-development variant (314.4(c)(4))"], "key": "software.custom_software", "n": 25, "prompt": "Do you develop or use any custom/in-house software that handles client information?", "required": true, "rules": ["R-CUSTOM-SOFTWARE"], "section": "4. Software and accounts", "subfields": [{"key": "software.custom_software_used", "required": true, "type": "yes_no"}, {"key": "software.custom_software_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["Appendix D MFA register rows (only systems marked 'on' are entered as enrolled)", "\u00a76.4 exceptions paragraph: any system 'off' is written as NOT enabled with a cross-reference to the gap list \u2014 never as an approved exception and never as fact", "Gap list: each 'off' = GAP (314.4(c)(5)); each 'unknown' = CONFIRM; pending enrollments = dated follow-up GAP"], "key": "mfa", "n": 26, "prompt": "Multi-factor authentication: for each of email / tax software / client portal / banking / cloud storage / remote access / password manager \u2014 On / Off / Don't know", "required": true, "rules": ["R-MFA"], "section": "4. Software and accounts", "subfields": [{"choices": ["on", "off", "unknown", "na"], "key": "mfa.status", "required": true, "systems": ["email", "tax_software", "portal", "banking", "cloud_storage", "remote_access", "password_manager"], "type": "per_system_choice"}, {"key": "mfa.methods", "required": false, "type": "text"}, {"key": "mfa.pending_enrollments", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.10 paper/intake wording", "Appendix H rule 3 consistency (portal rule)", "Risk register: email/text channel rows", "Gap list: client documents arriving by ordinary email or text photos = GAP (this is where plans usually break)"], "key": "channels.intake", "n": 27, "prompt": "How do clients send you documents today? (Portal, email, paper drop-off, photos by text message \u2014 be honest)", "required": true, "rules": ["R-CHANNELS"], "section": "4. Software and accounts", "subfields": [{"choices": ["portal", "email", "paper", "text_photos", "other"], "key": "channels.intake_channels", "required": true, "type": "multi_choice"}, {"key": "channels.intake_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.2 email row wording (sensitive attachments via portal only \u2014 stated only when delivery is portal-based)", "Gap list: sensitive documents sent by ordinary email = GAP"], "key": "channels.outbound_delivery", "n": 28, "prompt": "How do you send completed returns and sensitive documents to clients?", "required": true, "rules": ["R-CHANNELS"], "section": "4. Software and accounts", "type": "text"}, {"drives": ["\u00a76.9 network sentence (each element stated only as answered)", "Gap list: default admin password, WEP/open Wi-Fi = GAP; unknown values = CONFIRM; guest separation unverified = GAP (dated re-verification)"], "key": "network", "n": 29, "prompt": "Office internet and router: who set it up, is the admin password changed from default, is Wi-Fi encrypted (WPA2/WPA3), is there a guest network?", "required": true, "rules": ["R-NETWORK"], "section": "5. Network and remote access", "subfields": [{"key": "network.setup_detail", "required": false, "type": "text"}, {"key": "network.admin_password_changed", "required": true, "type": "yes_no_unknown"}, {"choices": ["WPA3", "WPA2", "WEP", "open", "unknown"], "key": "network.wifi_encryption", "required": true, "type": "choice"}, {"key": "network.guest_network", "required": true, "type": "yes_no"}, {"key": "network.guest_separation_verified", "required": false, "type": "yes_no_unknown"}], "type": "object"}, {"drives": ["\u00a76.9 remote-access clause: not-used variant, VPN variant, or named-method variant", "Risk register: remote/after-hours access row when used", "Gap list: remote access without MFA (from Q26) = GAP"], "key": "remote", "n": 30, "prompt": "Does anyone access firm systems remotely? How (VPN \u2014 which product, remote desktop, cloud only)?", "required": true, "rules": ["R-REMOTE", "R-CONTRADICT-REMOTE"], "section": "5. Network and remote access", "subfields": [{"key": "remote.used", "required": true, "type": "yes_no"}, {"key": "remote.method", "required": false, "type": "text"}, {"key": "remote.who", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.9 public Wi-Fi sentence (stated only when yes)", "Gap list: no/unknown while remote access is used = GAP/CONFIRM"], "key": "remote.public_wifi_vpn", "n": 31, "prompt": "Is a VPN used when working on public Wi-Fi?", "required": false, "rules": ["R-REMOTE"], "section": "5. Network and remote access", "type": "yes_no_unknown"}, {"drives": ["\u00a76.1 physical storage wording", "\u00a76.10 paper clause (storage named from the answer)", "Gap list: paper storage not locked or unknown = GAP/CONFIRM (314.4(c)(1) physical safeguards)"], "key": "paper", "n": 32, "prompt": "Where do paper client documents arrive, get worked, and get stored? Are storage cabinets/rooms locked?", "required": true, "rules": ["R-PAPER"], "section": "6. Paper", "subfields": [{"key": "paper.storage_detail", "required": true, "type": "text"}, {"key": "paper.storage_locked", "required": true, "type": "yes_no_unknown"}], "type": "object"}, {"drives": ["\u00a76.5 paper disposal sentence (cross-cut / contracted service named)", "Gap list: strip-cut = GAP (below the cross-cut standard the plan states); unknown = CONFIRM"], "key": "paper.destruction", "n": 33, "prompt": "How are paper records destroyed? (Shredder type, or a shredding service \u2014 name it)", "required": true, "rules": ["R-PAPER"], "section": "6. Paper", "subfields": [{"choices": ["cross_cut", "strip_cut", "service", "cross_cut_and_service", "unknown"], "key": "paper.shred_type", "required": true, "type": "choice"}, {"key": "paper.shredding_service", "required": false, "type": "text_none"}, {"key": "paper.destruction_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.10 removal clause: never-leave variant vs. controlled-removal variant written from the stated rules"], "key": "paper.leaves_office", "n": 34, "prompt": "Do paper files ever leave the office? Under what rules?", "required": true, "rules": ["R-PAPER"], "section": "6. Paper", "subfields": [{"key": "paper.files_leave_office", "required": true, "type": "yes_no"}, {"key": "paper.leaves_office_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a76.8 backups clause (service and schedule named)", "\u00a76.2 encryption table backup row", "Gap list: backup encryption no/unknown = GAP/CONFIRM (314.4(c)(3))"], "key": "backups", "n": 35, "prompt": "What is backed up, to what service or device, how often, and is the backup encrypted?", "required": true, "rules": ["R-BACKUPS"], "section": "7. Backups", "subfields": [{"key": "backups.service", "required": true, "type": "text"}, {"key": "backups.scope_frequency", "required": false, "type": "text"}, {"key": "backups.encrypted", "required": true, "type": "yes_no_unknown"}], "type": "object"}, {"drives": ["\u00a76.8 last-test sentence (date/result stated only when tested)", "\u00a77.1 testing list", "Gap list: never tested = GAP \u2014 an untested backup is not evidence of a control"], "key": "backups.restore_test", "n": 36, "prompt": "Have you ever tested restoring from backup? When, and did it work?", "required": true, "rules": ["R-BACKUPS"], "section": "7. Backups", "subfields": [{"key": "backups.restore_tested", "required": true, "type": "yes_no"}, {"key": "backups.restore_test_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["Appendix F vendor register rows (merged with software-derived vendors from Q18\u2013Q24, Q33, Q48; duplicates collapsed)", "\u00a710 provider list sentence"], "key": "vendors.list", "n": 37, "prompt": "List every outside company that can access or store your client information", "required": true, "rules": ["R-VENDORS"], "section": "8. Vendors and contracts", "subfields": [{"key": "name", "type": "text"}, {"key": "service", "type": "text"}, {"key": "info_access", "required": false, "type": "text"}, {"choices": ["yes", "no", "unknown"], "key": "clause_status", "required": false, "type": "choice"}, {"key": "clause_location", "required": false, "type": "text"}, {"key": "evidence_reviewed", "required": false, "type": "text"}], "type": "list_object"}, {"answered_within": "vendors.list[].clause_status", "drives": ["Appendix F clause column", "Gap list: clause 'no' = GAP (314.4(f)(2) requires safeguards by contract); 'unknown' = CONFIRM with a check date \u2014 the contract-clause check is a named competitor miss"], "key": "vendors.contract_clauses", "n": 38, "prompt": "For each vendor: do you have a written contract or terms of service, and does it say anything about safeguarding your data?", "required": true, "rules": ["R-VENDORS"], "section": "8. Vendors and contracts", "type": "per_vendor"}, {"drives": ["Operator file and review-call agenda (a bought template triggers the deficiency-review conversation); not asserted in the plan body"], "key": "history.existing_wisp", "n": 39, "prompt": "Do you have a written security plan today? (None / a template I bought / one I wrote / other)", "required": true, "rules": [], "section": "9. Safeguards and history", "subfields": [{"choices": ["none", "template", "self_written", "other"], "key": "history.existing_wisp_status", "required": true, "type": "choice"}, {"key": "history.existing_wisp_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a79.1 training wording (past sessions described only when done, with records status)", "Gap list: no training, or training without attendance records = GAP (314.4(e)(1) \u2014 training asserted but not recorded is a named competitor miss)"], "key": "history.training", "n": 40, "prompt": "Has the firm done staff security training? When, and is there a record of who attended?", "required": true, "rules": ["R-TRAINING"], "section": "9. Safeguards and history", "subfields": [{"key": "history.training_done", "required": true, "type": "yes_no"}, {"key": "history.training_detail", "required": false, "type": "text"}, {"key": "history.training_records", "required": false, "type": "yes_no_unknown"}], "type": "object"}, {"drives": ["Risk register: incident-history-informed likelihood for the matching risk row", "QI annual report: security events section (stated factually)", "Gap list CONFIRM: incident described without a recorded response review = follow-up for the review call"], "key": "history.prior_incidents", "n": 41, "prompt": "Has the firm ever had a security incident? Describe briefly \u2014 facts about the incident only, no client names", "required": true, "rules": ["R-INCIDENTS"], "section": "9. Safeguards and history", "subfields": [{"key": "history.prior_incident", "required": true, "type": "yes_no"}, {"key": "history.prior_incident_detail", "required": false, "type": "text"}], "type": "object"}, {"drives": ["Incident Response Plan contact card (companion document)", "Gap list CONFIRM when absent \u2014 the IR plan's insurer clock cannot be worked without it"], "key": "contacts.insurer", "n": 42, "prompt": "Do you carry cyber liability or E&O insurance? Insurer name (for the incident plan contact card)", "required": false, "rules": ["R-CONTACTS"], "section": "9. Safeguards and history", "type": "text_none"}, {"drives": ["Incident Response Plan contact card", "MFA register banking row label", "Gap list CONFIRM when absent"], "key": "contacts.bank", "n": 43, "prompt": "Who is your bank contact for a fraud/incident call? (Bank name and branch phone)", "required": false, "rules": ["R-CONTACTS"], "section": "9. Safeguards and history", "type": "text_none"}, {"drives": ["Incident Response Plan contact card (attorney is call #1 on the quick card)", "Gap list CONFIRM when absent"], "key": "contacts.attorney", "n": 44, "prompt": "Do you have an attorney the firm uses? (Name/firm \u2014 for the incident plan contact card)", "required": false, "rules": ["R-CONTACTS"], "section": "9. Safeguards and history", "type": "text_none"}, {"drives": ["Appendix E retention schedule periods (per-class rows built from the stated periods and the tax-record reconciliation note)", "\u00a76.5 review sentence"], "key": "retention.periods", "n": 45, "prompt": "How long do you keep client files after a client leaves? After a return is filed?", "required": true, "rules": ["R-RETENTION"], "section": "10. Retention", "type": "text"}, {"drives": ["Gap list: habit-only = GAP \u2014 Appendix E becomes the firm's first written rule at adoption (314.4(c)(6) reconciliation is a named competitor miss)"], "key": "retention.written_rule", "n": 46, "prompt": "Is there a written retention rule today, or is it habit?", "required": true, "rules": ["R-RETENTION"], "section": "10. Retention", "type": "yes_no"}, {"drives": ["\u00a76.5 disposal responsibility wording", "Appendix E disposal-method column"], "key": "retention.decision", "n": 47, "prompt": "Who decides when old files are destroyed, and how is it done?", "required": true, "rules": ["R-RETENTION"], "section": "10. Retention", "subfields": [{"key": "retention.decision_maker", "required": false, "type": "text"}, {"key": "retention.disposal_method", "required": false, "type": "text"}], "type": "object"}, {"drives": ["\u00a72 profile e-file status line (attested; the EFIN itself is never collected or recorded)", "Appendix F rows for transmitter and bank-product providers when named", "\u00a78 IRS stakeholder-liaison clock applies in full to e-file providers (Pub 1345)"], "key": "filing", "n": 48, "prompt": "Do you e-file returns? (Yes/no only \u2014 do not send your EFIN)", "required": true, "rules": ["R-EFILE"], "section": "11. Filing operations", "subfields": [{"key": "filing.efile", "required": true, "type": "yes_no"}, {"key": "filing.transmitter_service", "note": "Derived sub-question (build direction 2026-11-09): the e-file transmitter relationship \u2014 usually the tax software vendor or a separate transmitter \u2014 belongs in vendor oversight.", "required": false, "type": "text"}, {"key": "filing.bank_product_provider", "note": "Derived sub-question (build direction 2026-11-09): refund-transfer / bank-product providers hold client bank data and are routinely missing from template vendor registers.", "required": false, "type": "text_none"}], "type": "object"}, {"drives": ["QI annual report / review-call agenda (operational resilience); \u00a76.8 cross-reference when the fallback is the backup restore path"], "key": "filing.downtime_fallback", "n": 49, "prompt": "If your systems went down in the middle of filing season, what is your fallback today?", "required": false, "rules": [], "section": "11. Filing operations", "type": "text"}, {"drives": ["Review-call agenda verbatim \u2014 the operator reads this before drafting; flagged on the gap list as an operator REVIEW item so it is never silently merged or silently dropped"], "key": "firm.template_would_get_wrong", "n": 50, "prompt": "Anything about how your firm works that a template would get wrong?", "required": false, "rules": ["R-REVIEW-FLAG"], "section": "11. Filing operations", "type": "text"}], "sections": ["1. Your firm", "2. People", "3. Devices", "4. Software and accounts", "5. Network and remote access", "6. Paper", "7. Backups", "8. Vendors and contracts", "9. Safeguards and history", "10. Retention", "11. Filing operations"]};
+const STATES = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"];
+const AUTOSAVE_KEY = "wisp-intake-autosave-v1";
+
+const CHOICE_LABELS = {
+  all_on:"All on", some_off:"Some off", some_unknown:"Some unknown", all_unknown:"All unknown",
+  cloud:"Cloud", desktop:"Desktop", hosted:"Hosted (third party)", unknown:"Don't know",
+  on:"On", off:"Off", na:"Not applicable",
+  portal:"Client portal", email:"Email", paper:"Paper / in person", text_photos:"Text message / photos", other:"Other",
+  WPA3:"WPA3", WPA2:"WPA2", WEP:"WEP", open:"Open / none",
+  cross_cut:"Cross-cut shredder", strip_cut:"Strip-cut shredder", service:"Shredding service",
+  cross_cut_and_service:"Both shredder and service",
+  yes:"Yes", no:"No",
+  none:"None — no existing WISP", template:"Bought a template", self_written:"Wrote our own", other_label:"Other"
+};
+const FIELD_LABELS = {
+  contact_name:"Main contact name", contact_phone:"Main contact phone",
+  contact_email:"Email address (optional \u2014 for email reminder notifications)",
+  legal_name:"Legal name", dba:"DBA / trade name (if any)", qi_name:"Name", qi_title:"Title",
+  qi_backup:"Name (and title, if different)", name:"Name", role:"Role", description:"Description",
+  used_by:"Used by", location:"Location", info_stored:"Information stored", asset_tag:"Asset / tag",
+  service:"Service provided", info_access:"What firm/client information they can access",
+  clause_status:"Contract includes a data-protection / safeguards clause?",
+  clause_location:"Where (agreement, section, addendum)", evidence_reviewed:"Security evidence reviewed, if any",
+  intake_channels:"How clients send you documents", intake_detail:"Details (if Other, or anything unusual)",
+  status:"Status", methods:"Methods used (app, text code, key…)", pending_enrollments:"Anyone not yet enrolled?",
+  encryption_status:"Encryption status", existing_wisp_status:"Status", existing_wisp_detail:"Details"
+};
+const SYSTEM_LABELS = {email:"Email", tax_software:"Tax software", portal:"Client portal", banking:"Banking",
+  cloud_storage:"Cloud storage", remote_access:"Remote access", password_manager:"Password manager"};
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function idFor(key){return "f-" + key.replace(/[^A-Za-z0-9]+/g, "__");}
+function labelFor(key){const tail = key.split(".").pop(); return FIELD_LABELS[tail] || tail.replace(/_/g," ").replace(/^\w/, c => c.toUpperCase());}
+function choiceLabel(code){return CHOICE_LABELS[code] || String(code).replace(/_/g," ").replace(/^\w/, c => c.toUpperCase());}
+function getNested(obj, path){let cur = obj; for(const p of path.split(".")){ if(cur == null) return undefined; cur = cur[p]; } return cur;}
+function setNested(obj, path, value){const parts = path.split("."); let cur = obj; for(let i=0;i<parts.length-1;i++){ if(typeof cur[parts[i]] !== "object" || cur[parts[i]] === null) cur[parts[i]] = {}; cur = cur[parts[i]]; } cur[parts[parts.length-1]] = value;}
+
+function controlHTML(q, sf){
+  const key = sf ? sf.key : q.key;
+  const type = sf ? sf.type : q.type;
+  const choices = (sf && sf.choices) || (q && q.choices);
+  const id = idFor(key);
+  if(type === "text" || type === "text_none" || type === undefined){
+    let h = '<input type="text" id="' + id + '" data-key="' + key + '">';
+    if(type === "text_none") h += '<p class="hint">If this does not apply to your firm, write "None".</p>';
+    return h;
+  }
+  if(type === "number") return '<input type="number" min="0" id="' + id + '" data-key="' + key + '">';
+  if(type === "yes_no" || type === "yes_no_unknown"){
+    const opts = type === "yes_no" ? ["yes","no"] : ["yes","no","unknown"];
+    const lbl = {yes:"Yes", no:"No", unknown:"Don't know"};
+    return '<div class="radios" data-key="' + key + '" data-radiogroup="1">' + opts.map(o =>
+      '<label><input type="radio" name="' + id + '" value="' + o + '"> ' + lbl[o] + '</label>').join("") + '</div>';
+  }
+  if(type === "choice"){
+    return '<select id="' + id + '" data-key="' + key + '"><option value="">— choose —</option>' +
+      choices.map(c => '<option value="' + c + '">' + esc(choiceLabel(c)) + '</option>').join("") + '</select>';
+  }
+  if(type === "multi_choice"){
+    const codes = Array.isArray(choices) ? choices : STATES;
+    const cls = Array.isArray(choices) ? "checks" : "checks states";
+    return '<div class="' + cls + '" data-key="' + key + '" data-checkgroup="1">' + codes.map(c =>
+      '<label><input type="checkbox" value="' + c + '"> ' + esc(choiceLabel(c) === c ? c : choiceLabel(c)) + '</label>').join("") + '</div>';
+  }
+  if(type === "per_system_choice"){
+    const systems = sf.systems || [];
+    const opts = ["on","off","unknown","na"];
+    let h = '<table class="systems"><tr><th>System</th>' + opts.map(o => "<th>" + choiceLabel(o) + "</th>").join("") + "</tr>";
+    for(const sys of systems){
+      h += "<tr><td>" + (SYSTEM_LABELS[sys] || sys) + '</td>' + opts.map(o =>
+        '<td><input type="radio" name="' + id + "-" + sys + '" value="' + o + '" data-system="' + sys + '"></td>').join("") + "</tr>";
+    }
+    return h + "</table>";
+  }
+  if(type === "list_text") return '<textarea id="' + id + '" data-key="' + key + '" placeholder="One per line"></textarea>';
+  return '<input type="text" id="' + id + '" data-key="' + key + '">';
+}
+
+function listRowHTML(q, idx){
+  const fields = (q.subfields || []).map(sf =>
+    '<label class="field"><span>' + esc(labelFor(sf.key)) + (sf.required ? ' <span class="req">*</span>' : "") + '</span>' +
+    controlHTML(null, Object.assign({}, sf, {key: sf.key})) + '</label>').join("");
+  return '<div class="rowbox" data-row="' + idx + '"><div class="grid">' + fields + '</div>' +
+    '<button type="button" class="small" data-remove-row="1">Remove this row</button></div>';
+}
+
+function renderForm(){
+  const form = document.getElementById("intake");
+  const bySection = {};
+  for(const q of SCHEMA.questions){ (bySection[q.section] = bySection[q.section] || []).push(q); }
+  let h = "";
+  for(const section of SCHEMA.sections){
+    h += '<h2 class="section">' + esc(section) + "</h2>";
+    for(const q of bySection[section] || []){
+      h += '<div class="q" data-q="' + q.n + '"><p class="prompt"><span class="n">' + q.n + ".</span>" + esc(q.prompt) +
+           (q.required ? ' <span class="req">*</span>' : "") + "</p>";
+      if(q.type === "object" && q.subfields && q.subfields.length){
+        for(const sf of q.subfields || []){
+          h += '<label class="field"><span>' + esc(labelFor(sf.key)) + (sf.required ? ' <span class="req">*</span>' : "") + "</span></label>" + controlHTML(q, sf);
+        }
+      } else if(q.type === "list_object"){
+        h += '<div data-rows="' + q.n + '">' + listRowHTML(q, 0) + '</div>' +
+             '<button type="button" class="small" data-add-row="' + q.n + '">+ Add another</button>';
+      } else if(q.type === "per_vendor"){
+        h += '<p class="hint">This is answered inside the vendor list above (question 37) — each vendor row asks about that vendor\'s contract clause. Nothing more to enter here.</p>';
+      } else {
+        h += controlHTML(q, null);
+      }
+      h += "</div>";
+    }
+  }
+  form.innerHTML = h;
+  form.addEventListener("click", function(e){
+    const add = e.target.closest("[data-add-row]");
+    if(add){ const qn = +add.getAttribute("data-add-row"); const q = SCHEMA.questions.find(x => x.n === qn);
+      const box = form.querySelector('[data-rows="' + qn + '"]');
+      box.insertAdjacentHTML("beforeend", listRowHTML(q, box.children.length)); return; }
+    const rem = e.target.closest("[data-remove-row]");
+    if(rem){ const row = rem.closest(".rowbox"); const box = row.parentElement;
+      if(box.children.length > 1) row.remove(); else row.querySelectorAll("input,select,textarea").forEach(el => { el.value = ""; el.checked = false; });
+      autosave(); }
+  });
+}
+
+/* ---------- read a control ---------- */
+function readScalar(container, key, type){
+  const group = container.querySelector('[data-radiogroup][data-key="' + key + '"]');
+  if(group){ const c = group.querySelector("input:checked"); if(!c) return undefined;
+    if(type === "yes_no") return c.value === "yes";
+    if(type === "yes_no_unknown") return c.value === "unknown" ? "unknown" : (c.value === "yes"); return c.value; }
+  const checks = container.querySelector('[data-checkgroup][data-key="' + key + '"]');
+  if(checks){ const vals = Array.from(checks.querySelectorAll("input:checked")).map(i => i.value); return vals.length ? vals : undefined; }
+  const el = container.querySelector('[data-key="' + key + '"]');
+  if(!el) return undefined;
+  if(el.tagName === "TABLE" || el.querySelector && el.querySelector("table")) return undefined;
+  const v = el.value;
+  if(v === undefined || v === null || String(v).trim() === "") return undefined;
+  if(type === "number"){ const n = Number(v); return isNaN(n) ? undefined : n; }
+  return String(v).trim();
+}
+function readPerSystem(container, key){
+  const out = {};
+  container.querySelectorAll('input[type=radio][data-system]').forEach(r => { if(r.checked) out[r.getAttribute("data-system")] = r.value; });
+  return Object.keys(out).length ? out : undefined;
+}
+function readListText(container, key){
+  const el = container.querySelector('[data-key="' + key + '"]');
+  if(!el) return undefined;
+  const lines = el.value.split("\n").map(s => s.trim()).filter(Boolean);
+  return lines;
+}
+function readRows(q){
+  const box = document.querySelector('[data-rows="' + q.n + '"]');
+  if(!box) return undefined;
+  const rows = [];
+  box.querySelectorAll(".rowbox").forEach(rowEl => {
+    const row = {};
+    for(const sf of q.subfields || []){
+      const v = readScalar(rowEl, sf.key, sf.type);
+      if(v !== undefined) row[sf.key] = v;
+    }
+    if(Object.keys(row).length) rows.push(row);
+  });
+  return rows;
+}
+function collectAnswers(){
+  const answers = {};
+  for(const q of SCHEMA.questions){
+    if(q.type === "per_vendor") continue;
+    if(q.type === "object" && q.subfields && q.subfields.length){
+      for(const sf of q.subfields || []){
+        const v = sf.type === "per_system_choice" ? readPerSystem(document, sf.key) : readScalar(document, sf.key, sf.type);
+        if(v !== undefined) setNested(answers, sf.key, v);
+      }
+    } else if(q.type === "list_object"){
+      const rows = readRows(q);
+      if(rows !== undefined) setNested(answers, q.key, rows);
+    } else if(q.type === "list_text"){
+      const lines = readListText(document, q.key);
+      if(lines !== undefined) setNested(answers, q.key, lines);
+    } else {
+      const v = readScalar(document, q.key, q.type);
+      if(v !== undefined) setNested(answers, q.key, v);
+    }
+  }
+  return answers;
+}
+
+/* ---------- write values back (autosave restore) ---------- */
+function writeScalar(key, type, value){
+  const checks = document.querySelector('[data-checkgroup][data-key="' + key + '"]');
+  if(checks && Array.isArray(value)){ checks.querySelectorAll("input").forEach(i => { i.checked = value.includes(i.value); }); return; }
+  const group = document.querySelector('[data-radiogroup][data-key="' + key + '"]');
+  if(group){ const want = value === true ? "yes" : value === false ? "no" : String(value);
+    group.querySelectorAll("input").forEach(i => { i.checked = i.value === want; }); return; }
+  const el = document.querySelector('[data-key="' + key + '"]');
+  if(el && value !== undefined && value !== null) el.value = value;
+}
+function restoreAnswers(answers){
+  for(const q of SCHEMA.questions){
+    if(q.type === "per_vendor") continue;
+    if(q.type === "object" && q.subfields && q.subfields.length){
+      for(const sf of q.subfields || []){
+        const v = getNested(answers, sf.key);
+        if(v === undefined) continue;
+        if(sf.type === "per_system_choice"){ for(const sys of Object.keys(v)){
+          document.querySelectorAll('input[type=radio][data-system="' + sys + '"]').forEach(r => { if(r.value === v[sys]) r.checked = true; }); } }
+        else writeScalar(sf.key, sf.type, v);
+      }
+    } else if(q.type === "list_object"){
+      const rows = getNested(answers, q.key) || [];
+      const box = document.querySelector('[data-rows="' + q.n + '"]');
+      while(box.children.length < Math.max(1, rows.length)) box.insertAdjacentHTML("beforeend", listRowHTML(q, box.children.length));
+      rows.forEach((row, i) => { const rowEl = box.children[i];
+        for(const sf of q.subfields || []){ if(row[sf.key] !== undefined){
+          const el = rowEl.querySelector('[data-key="' + sf.key + '"]'); if(el) el.value = row[sf.key]; } } });
+    } else if(q.type === "list_text"){
+      const v = getNested(answers, q.key); const el = document.querySelector('[data-key="' + q.key + '"]');
+      if(el && Array.isArray(v)) el.value = v.join("\n");
+    } else {
+      const v = getNested(answers, q.key);
+      if(v !== undefined) writeScalar(q.key, q.type, v);
+    }
+  }
+}
+
+/* ---------- validation + counting (mirror generate.py) ---------- */
+function present(v){ return v !== undefined && v !== null && !(typeof v === "string" && v.trim() === "") && !(Array.isArray(v) && v.length === 0) && !(typeof v === "object" && !Array.isArray(v) && Object.keys(v).length === 0); }
+function validate(answers){
+  const errors = [];
+  for(const q of SCHEMA.questions){
+    if(q.type === "object" && q.subfields && q.subfields.length){
+      for(const sf of q.subfields){ if(sf.required && !present(getNested(answers, sf.key))) errors.push("Question " + q.n + " is missing a required answer (" + labelFor(sf.key) + ")."); }
+    } else if(q.type === "list_object" || q.type === "list_text"){
+      const v = getNested(answers, q.key); const min = ["people.staff","devices.inventory","vendors.list"].includes(q.key) ? 1 : 0;
+      if(q.required && (!Array.isArray(v) || v.length < min)) errors.push("Question " + q.n + " needs at least " + (min || 1) + " entr" + (min === 1 ? "y" : "ies") + ".");
+    } else if(q.type === "per_vendor"){ continue; }
+    else if(q.required && !present(getNested(answers, q.key))) errors.push("Question " + q.n + " is missing a required answer.");
+  }
+  return errors;
+}
+function countAnswered(answers){
+  let n = 0; const missing = [];
+  for(const q of SCHEMA.questions){
+    let ok;
+    if(q.type === "per_vendor"){ const rows = getNested(answers, "vendors.list") || []; ok = rows.some(r => r && r.clause_status !== undefined); }
+    else if(q.type === "object" && q.subfields && q.subfields.length){ ok = q.subfields.filter(sf => sf.required).every(sf => present(getNested(answers, sf.key))); }
+    else if(q.type === "list_object" || q.type === "list_text"){ const v = getNested(answers, q.key); const min = ["people.staff","devices.inventory","vendors.list"].includes(q.key) ? 1 : 0; ok = Array.isArray(v) && v.length >= min; }
+    else ok = present(getNested(answers, q.key));
+    if(ok) n++; else missing.push(q.n);
+  }
+  return {answered: n, missing: missing};
+}
+
+/* ---------- autosave ---------- */
+let saveTimer = null;
+function autosave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){
+    try{
+      localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({saved_at: new Date().toISOString(), answers: collectAnswers()}));
+      document.getElementById("saveState").textContent = "Autosaved on this device · " + new Date().toLocaleTimeString();
+    }catch(e){ /* storage unavailable — the form still works */ }
+  }, 250);
+}
+function loadAutosave(){
+  try{
+    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    if(data && data.answers && Object.keys(data.answers).length){
+      restoreAnswers(data.answers);
+      document.getElementById("restored").style.display = "block";
+    }
+  }catch(e){ /* ignore a corrupted save */ }
+}
+function clearSaved(){
+  try{ localStorage.removeItem(AUTOSAVE_KEY); }catch(e){}
+  document.getElementById("restored").style.display = "none";
+  document.getElementById("saveState").textContent = "Saved answers cleared from this browser.";
+}
+
+/* ---------- booking: slot picker (Tue–Thu mornings ET, one firm per hour) ---------- */
+const BOOKED = {};
+const BOOKING_KEY = "wisp-intake-booking-v1";
+const BK_DAYS = [2, 3, 4];               /* getDay(): Tuesday, Wednesday, Thursday */
+const BK_HOURS = [8, 9, 10, 11];
+let bookingPick = null;                  /* {date: "YYYY-MM-DD", hour: 8|9|10|11} */
+function isoDay(d){ const p = n => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()); }
+function fmtDay(iso){ const parts = iso.split("-").map(Number); return new Date(parts[0], parts[1]-1, parts[2]).toLocaleDateString("en-US", {weekday:"long", month:"long", day:"numeric", year:"numeric"}); }
+function renderSlots(){
+  const box = document.getElementById("slotPicker");
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  let h = ""; let shown = 0;
+  for(let i = 0; i < 21 && shown < 9; i++){
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    if(!BK_DAYS.includes(d.getDay())) continue;
+    const iso = isoDay(d);
+    const taken = BOOKED[iso] || [];
+    if(BK_HOURS.every(hr => taken.includes(hr))) continue;   /* a full morning is not offered */
+    shown++;
+    h += '<div class="day"><h3>' + esc(fmtDay(iso)) + '</h3><div class="slotbtns">' + BK_HOURS.map(hr =>
+      taken.includes(hr)
+        ? '<button type="button" class="small" disabled>' + hr + ":00 AM — taken</button>"
+        : '<button type="button" class="small" data-slot="' + iso + "|" + hr + '" aria-pressed="' + (bookingPick && bookingPick.date === iso && bookingPick.hour === hr ? "true" : "false") + '">' + hr + ":00 AM ET</button>"
+    ).join("") + "</div></div>";
+  }
+  box.innerHTML = h || "<p>No mornings are open in the next three weeks — email us and we will offer you the next one.</p>";
+  const echo = document.getElementById("bookingEcho");
+  echo.textContent = bookingPick ? "Your pick: " + fmtDay(bookingPick.date) + ", " + bookingPick.hour + ":00–" + (bookingPick.hour+1) + ":00 AM ET. It is held for your firm alone when you finish below." : "";
+}
+function saveBooking(){
+  try{ localStorage.setItem(BOOKING_KEY, JSON.stringify({pick: bookingPick,
+    phone: document.getElementById("bkPhone").value, email: document.getElementById("bkEmail").value})); }catch(e){}
+}
+function loadBooking(){
+  try{
+    const data = JSON.parse(localStorage.getItem(BOOKING_KEY) || "null");
+    if(data){
+      if(data.pick) bookingPick = data.pick;
+      if(data.phone) document.getElementById("bkPhone").value = data.phone;
+      if(data.email) document.getElementById("bkEmail").value = data.email;
+    }
+  }catch(e){}
+}
+document.getElementById("slotPicker").addEventListener("click", function(e){
+  const btn = e.target.closest("[data-slot]");
+  if(!btn) return;
+  const parts = btn.getAttribute("data-slot").split("|");
+  bookingPick = {date: parts[0], hour: Number(parts[1])};
+  saveBooking(); renderSlots();
+});
+document.getElementById("bkPhone").addEventListener("input", saveBooking);
+document.getElementById("bkEmail").addEventListener("input", saveBooking);
+
+/* ---------- submit: dual output ---------- */
+function slugify(s){ return String(s || "firm").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "firm"; }
+document.getElementById("submitBtn").addEventListener("click", function(){
+  const answers = collectAnswers();
+  const errors = validate(answers);
+  const bkPhone = document.getElementById("bkPhone").value.trim();
+  const bkEmail = document.getElementById("bkEmail").value.trim();
+  if(!bookingPick) errors.push("Step 2: please pick your verification call slot (Tuesday–Thursday mornings).");
+  if(!bkPhone) errors.push("Step 2: please give the best callback number for the verification call.");
+  if(!bkEmail) errors.push("Step 2: please give an email for your booking confirmation.");
+  const errBox = document.getElementById("errors");
+  if(errors.length){
+    errBox.innerHTML = "<strong>Almost there — a few things are still needed:</strong><ul>" +
+      errors.map(e => "<li>" + esc(e) + "</li>").join("") + "</ul><p>Nothing was downloaded. Your answers are still autosaved on this device.</p>";
+    errBox.style.display = "block"; errBox.scrollIntoView({behavior:"smooth"}); return;
+  }
+  errBox.style.display = "none";
+  const firm = getNested(answers, "firm.legal_name") || "firm";
+  const slug = slugify(firm);
+  const now = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  const ref = "WISP-" + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + "-" + pad(now.getHours()) + pad(now.getMinutes()) + "-" + slug;
+  const blob = new Blob([JSON.stringify(answers, null, 2)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = slug + "-wisp-intake.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  const booking = {schema: "wisp-booking/1", firm: firm, contact_name: getNested(answers, "people.qi_name") || "",
+    phone: bkPhone, email: bkEmail, slot_date: bookingPick.date, slot_hour: bookingPick.hour, submission_ref: ref};
+  setTimeout(function(){
+    const b2 = new Blob([JSON.stringify(booking, null, 2)], {type: "application/json"});
+    const a2 = document.createElement("a");
+    a2.href = URL.createObjectURL(b2); a2.download = slug + "-booking.json";
+    document.body.appendChild(a2); a2.click(); a2.remove();
+    setTimeout(() => URL.revokeObjectURL(a2.href), 4000);
+  }, 600);
+  const counts = countAnswered(answers);
+  const conf = document.getElementById("confirmation");
+  conf.innerHTML = "<h2>✓ Submitted — your answers file has downloaded</h2>" +
+    '<p>Submission reference: <span class="ref">' + esc(ref) + "</span></p>" +
+    "<p>You answered <strong>" + counts.answered + " of " + SCHEMA.questions.length + " questions</strong>." +
+    (counts.missing.length ? " Unanswered (optional) questions: " + counts.missing.join(", ") + " — we will confirm those with you on the review call rather than assume anything." : " Every question was answered.") + "</p>" +
+    "<p><strong>Keep this file — it is your copy of exactly what you sent.</strong> Send it to us the way we arranged together (email or your portal message), and keep your copy: it is the same file we build your plan from, word for word.</p>" +
+    "<p><strong>Your verification call: " + esc(fmtDay(bookingPick.date)) + ", " + bookingPick.hour + ":00–" + (bookingPick.hour+1) + ":00 AM ET.</strong> You call us at the start of your hour — the number is confirmed with your booking. Your slot is the full hour — it's yours. Running a few minutes late is fine: call in any time inside your hour. If we haven't heard from you in the first 15 minutes, we'll try you once at the number you gave us. If we can't connect, there's no charge and no penalty — your slot simply releases and you can pick the next open morning in the slot picker on this page. And if we're still with the firm ahead of you when you call, please leave a message — we will call you back inside your booked morning.</p>" +
+    "<p>A second small file, <strong>" + esc(slug) + "-booking.json</strong>, downloaded with your answers — send it along too. It holds only your firm name, contact, and your chosen slot.</p>" +
+    "<p>Note: this form carries no signature — it is your answers only. The signature lives on your plan, where you adopt it as your firm's Qualified Individual after the read-back call.</p>" +
+    '<p>Your answers also remain autosaved in this browser until you clear them: <button type="button" class="small" id="clearAfter">Clear saved answers from this browser</button></p>';
+  conf.style.display = "block";
+  document.getElementById("clearAfter").addEventListener("click", clearSaved);
+  conf.scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("clearTop").addEventListener("click", function(){ if(confirm("Clear the answers saved in this browser? The form fields stay as they are until you reload.")) clearSaved(); });
+
+renderForm();
+loadBooking();
+renderSlots();
+loadAutosave();
+document.getElementById("intake").addEventListener("input", autosave);
+document.getElementById("intake").addEventListener("change", autosave);
+</script>
+</body>
+</html>
