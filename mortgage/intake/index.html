@@ -111,6 +111,9 @@ label.field:has(+ [data-key="mortgage.licensed_states"]),label.field:has(+ [data
   #sfNav button:disabled{opacity:.35;cursor:default}
   #sfReview{display:none;background:#eef4fb;border:1.5px solid #1565c0;border-radius:10px;padding:14px;margin:14px 0}
   #sfReview li{margin:4px 0;font-size:14px}
+  #sfReview .sfGate{background:#fdf1f1;border:1.5px solid #b91c1c;border-radius:10px;padding:12px 14px;margin:0 0 14px}
+  #sfReview .sfGate strong{color:#b91c1c}
+  #sfReview .sfGateDet{font-size:13px;color:#7f1d1d}
   .sfDone{color:#1565c0;font-weight:700}.sfOpen{color:#a15c00;font-weight:700}
 .notice .hl{background:#ffe95e;padding:1px 0}
 </style>
@@ -609,9 +612,25 @@ document.getElementById("intake").addEventListener("change", autosave);
       var a = answered(q);
       return '<li>' + (a ? '<span class="sfDone">Answered</span>' : '<span class="sfOpen">Not answered</span>') + ' \u2014 ' + t + ' <a href="#" data-goto="' + j + '">(go back)</a></li>';
     }).join('');
-    review.innerHTML = '<h3 style="margin-top:0">Review your answers</h3><p>Check anything you want to change, then finish below.</p><ul>' + items + '</ul>';
+    var errs = [];
+    try{ errs = validate(collectAnswers()); }catch(e){ errs = []; }
+    var byQ = {};
+    errs.forEach(function(e){ var m = /Question (\d+)/.exec(e); if(m){ (byQ[m[1]] = byQ[m[1]] || []).push(e); } });
+    var missing = [];
+    steps.forEach(function(q, j){ var n = q.getAttribute('data-q'); if(n && byQ[n]) missing.push(j); });
+    var gate = '';
+    if(missing.length){
+      gate = '<div class="sfGate"><strong>These questions still need answers before you can submit:</strong><ul>' + missing.map(function(j){
+        var p = steps[j].querySelector('.prompt'); var t = p ? p.textContent.replace(/\s+/g, ' ').trim().replace(/\s*\*+$/, '') : ('Question ' + (j + 1));
+        var det = byQ[steps[j].getAttribute('data-q')].map(function(e){ return '<div class="sfGateDet">' + e.replace(/</g, '&lt;') + '</div>'; }).join('');
+        return '<li>' + t + ' <a href="#" data-goto="' + j + '">(go back)</a>' + det + '</li>';
+      }).join('') + '</ul><p style="margin-bottom:0">Tap go back beside any question to answer it, then step through to this review again. The Finish button appears once every required question is answered.</p></div>';
+    } else if(errs.length){
+      gate = '<div class="sfGate"><strong>A few things still need fixing before you can submit:</strong><ul>' + errs.map(function(e){ return '<li>' + e.replace(/</g, '&lt;') + '</li>'; }).join('') + '</ul></div>';
+    }
+    review.innerHTML = gate + '<h3 style="margin-top:0">Review your answers</h3><p>Check anything you want to change' + (errs.length ? '.' : ', then finish below.') + '</p><ul>' + items + '</ul>';
     review.style.display = '';
-    showFinal();
+    if(errs.length){ hideFinal(); } else { showFinal(); }
     review.querySelectorAll('[data-goto]').forEach(function(a){
       a.addEventListener('click', function(e){ e.preventDefault(); show(+a.getAttribute('data-goto')); anchorTo(head); });
     });
