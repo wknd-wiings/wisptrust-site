@@ -162,16 +162,16 @@ label.field:has(+ [data-key="mortgage.licensed_states"]),label.field:has(+ [data
 
   <div class="card" id="submitCard">
     <h2>Step 2 — Submit your answers</h2>
-    <p>There is no call to schedule. When you finish, your answers download as one small file and you email that file to us at <strong>wisptrust@gmail.com</strong> &mdash; that email is your submission.</p>
+    <p>There is no call to schedule. When you finish, your answers are sent straight to us — nothing to download and email yourself — and your submission is in.</p>
     <label class="field"><span>Email for your submission confirmation and any follow-up questions <span class="req">*</span></span><input type="text" id="bkEmail"></label>
     <label class="field"><span>Best contact number <span class="req">*</span></span><input type="text" id="bkPhone"></label>
     <p class="hint" id="submitEcho"></p>
-    <p><strong>How submission works:</strong> the Finish button below checks your required answers, downloads one file with all of them, and shows your submission reference on this page. Email that file to <strong>wisptrust@gmail.com</strong> to complete your submission &mdash; we confirm receipt by email.</p>
+    <p><strong>How submission works:</strong> the Finish button below checks your required answers, sends your answers file straight to us, and shows your submission confirmation on this page with your reference number. A copy of the file also downloads for your own records, and we confirm receipt by email.</p>
   </div>
 
   <div class="submitbar">
-    <button type="button" class="primary" id="submitBtn">Finish — download my answers</button>
-    <p class="hint">Submitting downloads one file holding all your answers and shows your submission reference on this page. Email that file to wisptrust@gmail.com to complete your submission.</p>
+    <button type="button" class="primary" id="submitBtn">Finish — send my answers</button>
+    <p class="hint">Submitting sends your answers straight to us and shows your submission confirmation on this page. A copy of the file downloads for your records.</p>
   </div>
 <section class="faq">
   <h2>Questions firms ask us</h2>
@@ -551,8 +551,24 @@ document.getElementById("submitBtn").addEventListener("click", function(){
   document.getElementById("clearAfter").addEventListener("click", clearSaved);
   conf.scrollIntoView({behavior:"smooth"});
   }
-  downloadCopy();
-  renderConf(false);
+  const RELAY_URL = "https://script.google.com/macros/s/AKfycbyzbwF0dbYMtlN5w-GO2wkoCClUVONEvjNQLFINzyrvgbFAJ9YSKrUlML1Ki_p7kHADng/exec";
+  const btn = document.getElementById("submitBtn");
+  const btnText = btn.textContent;
+  btn.disabled = true; btn.textContent = "Sending your answers\u2026";
+  function sendFailed(){ downloadCopy(); btn.disabled = false; btn.textContent = btnText; renderConf(false); }
+  const reader = new FileReader();
+  reader.onload = function(){
+    const b64 = String(reader.result).split(",")[1] || "";
+    const body = new URLSearchParams({ filename: fileName, firm: firm, ref: ref, email: bkEmail, phone: bkPhone, data: b64 });
+    const ctrl = new AbortController();
+    const timer = setTimeout(function(){ ctrl.abort(); }, 45000);
+    fetch(RELAY_URL, { method: "POST", body: body, signal: ctrl.signal })
+      .then(function(r){ return r.json().catch(function(){ return {}; }); })
+      .then(function(j){ clearTimeout(timer); if (j && j.ok === true) { downloadCopy(); btn.disabled = false; btn.textContent = btnText; renderConf(true); } else { sendFailed(); } })
+      .catch(function(){ clearTimeout(timer); sendFailed(); });
+  };
+  reader.onerror = sendFailed;
+  reader.readAsDataURL(blob);
 });
 document.getElementById("clearTop").addEventListener("click", function(){ if(confirm("Clear the answers saved in this browser? The form fields stay as they are until you reload.")) clearSaved(); });
 
