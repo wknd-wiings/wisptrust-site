@@ -48,7 +48,13 @@ a{color:inherit}
 
 /* top bar */
 .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
-.topbar-in{height:12px}
+.topbar-in{height:auto;display:flex;align-items:center;gap:12px;padding:10px 0}
+.brandmark{height:46px;width:auto;display:block}
+.brandtext{line-height:1}
+.brandname{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;font-weight:700;color:#14232f}
+.brandsub{display:block;font-size:.62rem;letter-spacing:.22em;color:#2e5d43;font-weight:700;margin-top:3px}
+.brandright{margin-left:auto;font-size:.8rem;color:#5a6a76;white-space:nowrap}
+@media (max-width:640px){.brandright{display:none}.brandmark{height:38px}.brandname{font-size:1.45rem}}
 .brand{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--text)}
 .brand span{color:var(--blue)}
 .brand small{display:block;letter-spacing:.08em;text-transform:none;font-weight:500;color:var(--muted);font-size:.78rem;margin-top:1px}
@@ -179,8 +185,12 @@ footer a:hover{border-color:#ffffff}
   <button class="banner-close" id="bannerClose" type="button" aria-label="Dismiss update notice">×</button>
 </div>
 
-<header class="topbar" aria-hidden="true">
-  <div class="wrap topbar-in"></div>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <img class="brandmark" src="logo-mark.png" alt="WispTrust logo">
+    <div class="brandtext"><span class="brandname">WispTrust</span><span class="brandsub">VERIFIED SECURITY PLANNING</span></div>
+    <div class="brandright">Operated by MVP Forge LLC</div>
+  </div>
 </header>
 
 <!-- HERO -->
