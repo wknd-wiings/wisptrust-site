@@ -625,7 +625,7 @@ document.getElementById("intake").addEventListener("change", autosave);
         var n2 = steps[j].getAttribute('data-q');
         var det = (n2 && byQ[n2]) ? byQ[n2].map(function(e){ return '<div class="sfGateDet">' + e.replace(/</g, '&lt;') + '</div>'; }).join('') : '<div class="sfGateDet">No answer yet \u2014 if this does not apply to your firm, type None or N/A so we know it is settled.</div>';
         return '<li>' + t + ' <a href="#" data-goto="' + j + '">(go back)</a>' + det + '</li>';
-      }).join('') + '</ul><p style="margin-bottom:0">Tap go back beside any question to answer it, then step through to this review again. The Finish button appears once every required question is answered.</p></div>';
+      }).join('') + '</ul><p style="margin-bottom:0">Tap go back beside any question to answer it, then step through to this review again. The Finish button appears once every question is answered.</p></div>';
     } else if(errs.length){
       gate = '<div class="sfGate"><strong>A few things still need fixing before you can submit:</strong><ul>' + errs.map(function(e){ return '<li>' + e.replace(/</g, '&lt;') + '</li>'; }).join('') + '</ul></div>';
     }
