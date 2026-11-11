@@ -550,6 +550,7 @@ document.getElementById("intake").addEventListener("change", autosave);
 (function(){
   var form = document.getElementById('intake');
   var steps = Array.prototype.slice.call(form.querySelectorAll('.q')).filter(function(el){ return !!el.querySelector('input,select,textarea'); });
+  var heads = Array.prototype.slice.call(form.querySelectorAll('h2'));
   var sec = '';
   Array.prototype.forEach.call(form.children, function(el){
     if(el.tagName === 'H2'){ sec = el.textContent; }
@@ -582,6 +583,8 @@ document.getElementById("intake").addEventListener("change", autosave);
   function show(i){
     cur = Math.max(0, Math.min(i, total - 1));
     steps.forEach(function(q, j){ q.style.display = (j === cur) ? '' : 'none'; });
+    var cs = steps[cur].getAttribute('data-section') || '';
+    heads.forEach(function(hd){ hd.style.display = (hd.textContent === cs) ? '' : 'none'; });
     review.style.display = 'none'; hideFinal(); nav.style.display = 'flex'; head.style.display = '';
     label.textContent = 'Question ' + (cur + 1) + ' of ' + total;
     sect.textContent = steps[cur].getAttribute('data-section') || '';
@@ -595,6 +598,7 @@ document.getElementById("intake").addEventListener("change", autosave);
   }
   function finish(){
     steps.forEach(function(q){ q.style.display = 'none'; });
+    heads.forEach(function(hd){ hd.style.display = 'none'; });
     nav.style.display = 'none'; head.style.display = 'none';
     var items = steps.map(function(q, j){
       var p = q.querySelector('.prompt'); var t = p ? p.textContent.replace(/\s+/g, ' ').trim() : ('Question ' + (j + 1));
