@@ -605,7 +605,10 @@ document.getElementById("intake").addEventListener("change", autosave);
     bar.style.width = ((cur + 1) / total * 100) + '%';
     document.getElementById('sfBack').disabled = (cur === 0);
     document.getElementById('sfNext').innerHTML = (cur === total - 1) ? 'Review &amp; finish &rarr;' : 'Next &rarr;';
-    window.scrollTo(0, 0);
+  }
+  function anchorTo(el){
+    var y = el.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, Math.max(0, y - 8));
   }
   function finish(){
     steps.forEach(function(q){ q.style.display = 'none'; });
@@ -619,12 +622,12 @@ document.getElementById("intake").addEventListener("change", autosave);
     review.style.display = '';
     showFinal();
     review.querySelectorAll('[data-goto]').forEach(function(a){
-      a.addEventListener('click', function(e){ e.preventDefault(); show(+a.getAttribute('data-goto')); });
+      a.addEventListener('click', function(e){ e.preventDefault(); show(+a.getAttribute('data-goto')); anchorTo(head); });
     });
-    window.scrollTo(0, 0);
+    anchorTo(review);
   }
-  document.getElementById('sfBack').addEventListener('click', function(){ show(cur - 1); });
-  document.getElementById('sfNext').addEventListener('click', function(){ if(cur === total - 1){ finish(); } else { show(cur + 1); } });
+  document.getElementById('sfBack').addEventListener('click', function(){ show(cur - 1); anchorTo(head); });
+  document.getElementById('sfNext').addEventListener('click', function(){ if(cur === total - 1){ finish(); } else { show(cur + 1); anchorTo(head); } });
   show(0);
 })();
 </script>
