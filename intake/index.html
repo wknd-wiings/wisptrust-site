@@ -576,7 +576,7 @@ document.getElementById("submitBtn").addEventListener("click", function(){
   const reader = new FileReader();
   reader.onload = function(){
     const b64 = String(reader.result).split(",")[1] || "";
-    const body = new URLSearchParams({ filename: fileName, firm: firm, ref: ref, email: bkEmail, phone: bkPhone, data: b64 });
+    const body = new URLSearchParams({ filename: fileName, firm: firm, ref: ref, name: (answers.firm && answers.firm.contact_name) || "", email: bkEmail, phone: bkPhone, data: b64 });
     const ctrl = new AbortController();
     const timer = setTimeout(function(){ ctrl.abort(); }, 45000);
     fetch(RELAY_URL, { method: "POST", body: body, signal: ctrl.signal })
