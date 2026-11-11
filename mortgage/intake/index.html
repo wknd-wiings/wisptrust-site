@@ -630,7 +630,7 @@ document.getElementById("intake").addEventListener("change", autosave);
       gate = '<div class="sfGate"><strong>A few things still need fixing before you can submit:</strong><ul>' + errs.map(function(e){ return '<li>' + e.replace(/</g, '&lt;') + '</li>'; }).join('') + '</ul></div>';
     }
     review.innerHTML = gate + '<h3 style="margin-top:0">Review your answers</h3><p>Check anything you want to change' + ((errs.length || missing.length) ? '.' : ', then finish below.') + '</p><ul>' + items + '</ul>';
-    review.style.display = '';
+    review.style.display = 'block';
     if(errs.length || missing.length){ hideFinal(); } else { showFinal(); }
     review.querySelectorAll('[data-goto]').forEach(function(a){
       a.addEventListener('click', function(e){ e.preventDefault(); show(+a.getAttribute('data-goto')); anchorTo(head); });
