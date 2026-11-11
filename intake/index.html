@@ -104,6 +104,22 @@ label.field:has(+ [data-key="devices.antivirus_product"]),label.field:has(+ [dat
   footer{max-width:860px;margin:0 auto;padding:6px 20px 34px;color:rgba(255,255,255,.75);
          font-size:13px;text-align:center}
   footer .badge{color:var(--white);font-weight:600;letter-spacing:.4px}
+
+  /* Step flow: one question per screen (2026-11-10) */
+  #sfHead{position:sticky;top:0;background:var(--white);border-bottom:2px solid #2e7d32;padding:10px 4px;z-index:50;margin-bottom:6px}
+  #sfLabel{font-weight:700;font-size:16px;color:var(--ink)}
+  #sfSection{font-size:13px;color:var(--slate);margin-top:2px}
+  #sfBarWrap{background:#e3e7ea;height:10px;border-radius:5px;margin-top:8px}
+  #sfBar{background:#2e7d32;height:10px;border-radius:5px;width:2%;transition:width .25s}
+  #intake h2.section{display:none}
+  #sfNav{display:flex;gap:12px;margin:22px 0 8px}
+  #sfNav button{flex:1;padding:16px;font-size:17px;border-radius:10px;border:2px solid #2e7d32;cursor:pointer}
+  #sfBack{background:var(--white);color:#2e7d32}
+  #sfNext{background:#2e7d32;color:#fff;font-weight:700}
+  #sfNav button:disabled{opacity:.35;cursor:default}
+  #sfReview{display:none;background:#f4f8f4;border:1.5px solid #2e7d32;border-radius:10px;padding:14px;margin:14px 0}
+  #sfReview li{margin:4px 0;font-size:14px}
+  .sfDone{color:#2e7d32;font-weight:700}.sfOpen{color:#a15c00;font-weight:700}
 </style>
 </head>
 <body>
@@ -529,6 +545,73 @@ loadContact();
 loadAutosave();
 document.getElementById("intake").addEventListener("input", autosave);
 document.getElementById("intake").addEventListener("change", autosave);
+</script>
+
+<script>
+/* Step flow controller: one question per screen; Finish appears only after Q50 review. */
+(function(){
+  var form = document.getElementById('intake');
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.q'));
+  var sec = '';
+  Array.prototype.forEach.call(form.children, function(el){
+    if(el.tagName === 'H2'){ sec = el.textContent; }
+    else if(el.classList && el.classList.contains('q')){ el.setAttribute('data-section', sec); }
+  });
+  var submitCard = document.getElementById('submitCard');
+  var submitBar = document.querySelector('.submitbar');
+  var faqSec = document.querySelector('section.faq');
+  function hideFinal(){ submitCard.style.display = 'none'; if(submitBar) submitBar.style.display = 'none'; if(faqSec) faqSec.style.display = 'none'; }
+  function showFinal(){ submitCard.style.display = ''; if(submitBar) submitBar.style.display = ''; if(faqSec) faqSec.style.display = ''; }
+  var head = document.createElement('div'); head.id = 'sfHead';
+  head.innerHTML = '<div id="sfLabel"></div><div id="sfSection"></div><div id="sfBarWrap"><div id="sfBar"></div></div>';
+  form.parentNode.insertBefore(head, form);
+  var nav = document.createElement('div'); nav.id = 'sfNav';
+  nav.innerHTML = '<button type="button" id="sfBack">&larr; Back</button><button type="button" id="sfNext">Next &rarr;</button>';
+  form.parentNode.insertBefore(nav, submitCard);
+  var review = document.createElement('div'); review.id = 'sfReview';
+  form.parentNode.insertBefore(review, submitCard);
+  var cur = 0, total = steps.length;
+  var label = document.getElementById('sfLabel'), sect = document.getElementById('sfSection'), bar = document.getElementById('sfBar');
+  hideFinal();
+  function answered(q){
+    var ok = false;
+    q.querySelectorAll('input,select,textarea').forEach(function(el){
+      if(el.type === 'checkbox' || el.type === 'radio'){ if(el.checked) ok = true; }
+      else if(el.value && el.value.trim()){ ok = true; }
+    });
+    return ok;
+  }
+  function show(i){
+    cur = Math.max(0, Math.min(i, total - 1));
+    steps.forEach(function(q, j){ q.style.display = (j === cur) ? '' : 'none'; });
+    review.style.display = 'none'; hideFinal(); nav.style.display = 'flex'; head.style.display = '';
+    label.textContent = 'Question ' + (cur + 1) + ' of ' + total;
+    sect.textContent = steps[cur].getAttribute('data-section') || '';
+    bar.style.width = ((cur + 1) / total * 100) + '%';
+    document.getElementById('sfBack').disabled = (cur === 0);
+    document.getElementById('sfNext').innerHTML = (cur === total - 1) ? 'Review &amp; finish &rarr;' : 'Next &rarr;';
+    window.scrollTo(0, 0);
+  }
+  function finish(){
+    steps.forEach(function(q){ q.style.display = 'none'; });
+    nav.style.display = 'none'; head.style.display = 'none';
+    var items = steps.map(function(q, j){
+      var p = q.querySelector('.prompt'); var t = p ? p.textContent.replace(/\s+/g, ' ').trim() : ('Question ' + (j + 1));
+      var a = answered(q);
+      return '<li>' + (a ? '<span class="sfDone">Answered</span>' : '<span class="sfOpen">Not answered</span>') + ' \u2014 ' + t + ' <a href="#" data-goto="' + j + '">(go back)</a></li>';
+    }).join('');
+    review.innerHTML = '<h3 style="margin-top:0">Review your answers</h3><p>Check anything you want to change, then finish below.</p><ul>' + items + '</ul>';
+    review.style.display = '';
+    showFinal();
+    review.querySelectorAll('[data-goto]').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); show(+a.getAttribute('data-goto')); });
+    });
+    window.scrollTo(0, 0);
+  }
+  document.getElementById('sfBack').addEventListener('click', function(){ show(cur - 1); });
+  document.getElementById('sfNext').addEventListener('click', function(){ if(cur === total - 1){ finish(); } else { show(cur + 1); } });
+  show(0);
+})();
 </script>
 </body>
 </html>
