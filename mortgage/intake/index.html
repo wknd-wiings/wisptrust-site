@@ -162,16 +162,16 @@ label.field:has(+ [data-key="mortgage.licensed_states"]),label.field:has(+ [data
 
   <div class="card" id="submitCard">
     <h2>Step 2 — Submit your answers</h2>
-    <p>There is no call to schedule. When you finish, your answers are sent straight to us — nothing to download and email yourself — and your submission is in. A Client Verification Specialist reviews every answer in-house; if anything needs clarifying, we reach out to you by email. Your finished plan is delivered within two business days (Monday–Thursday) of your submission — a Friday submission is delivered by Tuesday.</p>
+    <p>There is no call to schedule. When you finish, your answers download as one small file and you email that file to us at <strong>wisptrust@gmail.com</strong> &mdash; that email is your submission.</p>
     <label class="field"><span>Email for your submission confirmation and any follow-up questions <span class="req">*</span></span><input type="text" id="bkEmail"></label>
     <label class="field"><span>Best contact number <span class="req">*</span></span><input type="text" id="bkPhone"></label>
     <p class="hint" id="submitEcho"></p>
-    <p><strong>How submission works:</strong> the Finish button below checks your required answers, sends your answers file straight to us, and shows your submission confirmation on this page with your reference number. A copy of the file also downloads for your own records, and we confirm receipt by email.</p>
+    <p><strong>How submission works:</strong> the Finish button below checks your required answers, downloads one file with all of them, and shows your submission reference on this page. Email that file to <strong>wisptrust@gmail.com</strong> to complete your submission &mdash; we confirm receipt by email.</p>
   </div>
 
   <div class="submitbar">
     <button type="button" class="primary" id="submitBtn">Finish — send my answers</button>
-    <p class="hint">Submitting sends your answers straight to us and shows your submission confirmation on this page. A copy of the file downloads for your records.</p>
+    <p class="hint">Submitting downloads one file holding all your answers and shows your submission reference on this page. Email that file to wisptrust@gmail.com to complete your submission.</p>
   </div>
 <section class="faq">
   <h2>Questions firms ask us</h2>
@@ -551,24 +551,8 @@ document.getElementById("submitBtn").addEventListener("click", function(){
   document.getElementById("clearAfter").addEventListener("click", clearSaved);
   conf.scrollIntoView({behavior:"smooth"});
   }
-  const btn = document.getElementById("submitBtn");
-  const btnText = btn.textContent;
-  btn.disabled = true; btn.textContent = "Sending your answers\u2026";
-  const fd = new FormData();
-  fd.append("attachment", blob, fileName);
-  fd.append("_subject", "WispTrust intake \u2014 " + firm + " (" + ref + ")");
-  fd.append("_template", "table");
-  fd.append("_captcha", "false");
-  fd.append("_honey", "");
-  fd.append("_replyto", bkEmail);
-  fd.append("Firm", firm);
-  fd.append("Submission reference", ref);
-  fd.append("Contact email", bkEmail);
-  fd.append("Contact phone", bkPhone);
-  fetch("https://formsubmit.co/ajax/wisptrust@gmail.com", {method: "POST", headers: {"Accept": "application/json"}, body: fd})
-    .then(function(r){ return r.json().catch(function(){ return {}; }); })
-    .then(function(j){ downloadCopy(); btn.disabled = false; btn.textContent = btnText; renderConf(!!(j && (j.success === true || j.success === "true"))); })
-    .catch(function(){ downloadCopy(); btn.disabled = false; btn.textContent = btnText; renderConf(false); });
+  downloadCopy();
+  renderConf(false);
 });
 document.getElementById("clearTop").addEventListener("click", function(){ if(confirm("Clear the answers saved in this browser? The form fields stay as they are until you reload.")) clearSaved(); });
 
