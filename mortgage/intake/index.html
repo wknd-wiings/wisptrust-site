@@ -549,7 +549,7 @@ document.getElementById("intake").addEventListener("change", autosave);
 /* Step flow controller: one question per screen; Finish appears only after Q50 review. */
 (function(){
   var form = document.getElementById('intake');
-  var steps = Array.prototype.slice.call(form.querySelectorAll('.q'));
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.q')).filter(function(el){ return !!el.querySelector('input,select,textarea'); });
   var sec = '';
   Array.prototype.forEach.call(form.children, function(el){
     if(el.tagName === 'H2'){ sec = el.textContent; }
