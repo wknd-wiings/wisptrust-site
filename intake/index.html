@@ -568,6 +568,7 @@ document.getElementById("intake").addEventListener("change", autosave);
   var form = document.getElementById('intake');
   var steps = Array.prototype.slice.call(form.querySelectorAll('.q')).filter(function(el){ return !!el.querySelector('input,select,textarea'); });
   var heads = Array.prototype.slice.call(form.querySelectorAll('h2'));
+  form.querySelectorAll('.q').forEach(function(el){ if(steps.indexOf(el) === -1) el.style.display = 'none'; });
   var sec = '';
   Array.prototype.forEach.call(form.children, function(el){
     if(el.tagName === 'H2'){ sec = el.textContent; }
