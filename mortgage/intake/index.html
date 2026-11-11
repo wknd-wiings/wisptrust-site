@@ -533,6 +533,10 @@ document.getElementById("submitBtn").addEventListener("click", function(){
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
   }
   const counts = countAnswered(answers);
+  const pvNs = SCHEMA.questions.filter(q => q.type === "per_vendor").map(q => q.n);
+  const totalQ = SCHEMA.questions.length - pvNs.length;
+  const missShown = counts.missing.filter(n => !pvNs.includes(n));
+  const ansShown = counts.answered - pvNs.filter(n => !counts.missing.includes(n)).length;
   const conf = document.getElementById("confirmation");
   function renderConf(sent){
     conf.innerHTML = (sent
@@ -540,8 +544,8 @@ document.getElementById("submitBtn").addEventListener("click", function(){
       : "<h2>\u2713 Your answers are ready \u2014 one step left</h2>") +
     '<p>Submission reference: <span class="ref">' + esc(ref) + "</span></p>" +
     '<div class="reviewer"><img class="reviewer-photo" src="douglas-mccray.jpg" alt="Douglas McCray II" width="72" height="72"><p><strong>Your intake sheet will be personally reviewed by a Client Verification Specialist.</strong> We confirm receipt by email at the address you gave; the review is complete within one business day (Monday–Thursday). If anything needs clarifying, we will reach out by email — nothing is ever guessed at. Your finished plan is delivered within two business days of submission (a Friday submission is delivered by Tuesday).</p></div>' +
-    "<p>You answered <strong>" + counts.answered + " of " + SCHEMA.questions.length + " questions</strong>." +
-    (counts.missing.length ? " Unanswered (optional) questions: " + counts.missing.join(", ") + " — those stay open items on your gap list unless we confirm them with you by email; we never assume an answer." : " Every question was answered.") + "</p>" +
+    "<p>You answered <strong>" + ansShown + " of " + totalQ + " questions</strong>." +
+    (missShown.length ? " Unanswered (optional) questions: " + missShown.join(", ") + " — those stay open items on your gap list unless we confirm them with you by email; we never assume an answer." : " Every question was answered.") + "</p>" +
       (sent
         ? "<p><strong>Your answers were sent straight to us</strong> \u2014 and a copy of the file just downloaded for your own records. It is exactly what you sent, word for word: the same file we build your plan from. We confirm receipt by email at the address you gave.</p>"
         : "<p><strong>Keep this file \u2014 it is your copy of exactly what you answered.</strong> This form does not send itself, so please email it to <strong>wisptrust@gmail.com</strong> to complete your submission. It is the same file we build your plan from, word for word.</p>") +
