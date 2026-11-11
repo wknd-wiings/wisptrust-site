@@ -29,7 +29,7 @@
   .card{background:var(--white);border:1px solid var(--line);border-radius:8px;
         padding:18px 20px;margin:0 0 18px}
   .notice{border-left:5px solid var(--navy);background:var(--panel)}
-  .notice h2{margin:0 0 8px;font-size:17px;color:var(--navy)}
+  .notice h2{margin:0 0 8px;font-size:1.5em;color:#b91c1c}
   .notice p{margin:0 0 10px}
   .notice p:last-child{margin-bottom:0}
   h2.section{font-size:18px;color:var(--navy);margin:26px 0 10px;padding-bottom:6px;
@@ -109,6 +109,7 @@ label.field:has(+ [data-key="mortgage.licensed_states"]),label.field:has(+ [data
   #sfReview{display:none;background:#eef4fb;border:1.5px solid #1565c0;border-radius:10px;padding:14px;margin:14px 0}
   #sfReview li{margin:4px 0;font-size:14px}
   .sfDone{color:#1565c0;font-weight:700}.sfOpen{color:#a15c00;font-weight:700}
+.notice .hl{background:#ffe95e;padding:1px 0}
 </style>
 </head>
 <body>
@@ -136,7 +137,7 @@ label.field:has(+ [data-key="mortgage.licensed_states"]),label.field:has(+ [data
   <div class="card notice">
     <h2>⚠ Read this first — what NOT to send us</h2>
     <p><strong>Do not send us any borrower data. Ever.</strong></p>
-    <p>That means: no borrower names, no Social Security numbers, no loan files or anything from one, no credit reports, no pay stubs or bank statements, no passwords or login codes, and not your NMLS ID number itself (we will only ever ask whether it is <em>recorded in your own records</em>).</p>
+    <p><span class="hl">That means: no borrower names, no Social Security numbers, no loan files or anything from one, no credit reports, no pay stubs or bank statements, no passwords or login codes, and not your NMLS ID number itself (we will only ever ask whether it is <em>recorded in your own records</em>).</span></p>
     <p>This questionnaire asks only about <strong>how your firm operates</strong> — staff, software, devices, vendors, and office setup. That is all we need to build your plan, and it is all we are willing to receive. If something in this list tempts you to attach a borrower document, stop and just describe it in general terms instead ("about 300 active loan files," not the files).</p>
     <p>Why we are strict about this: your borrowers trusted you with their information for their loan — never for this service. Sharing it with us is never necessary to build your plan, and keeping it out of both our systems protects your borrowers, you, and us.</p>
     <p>If you realize you have sent us borrower data by mistake, tell us the same day. We delete it, log the deletion, and confirm to you in writing.</p>
