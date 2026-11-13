@@ -51,6 +51,8 @@ a{color:inherit}
 .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
 .topbar-in{height:auto;display:flex;align-items:center;gap:12px;padding:10px 0}
 .brandmark{height:46px;width:auto;display:block}
+.brandhome{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer}
+.brandhome:focus-visible{outline:3px solid #f2b705;outline-offset:2px}
 .brandtext{line-height:1}
 .brandname{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;font-weight:700;color:#14232f}
 .brandsub{display:block;font-size:.62rem;letter-spacing:.22em;color:#2e5d43;font-weight:700;margin-top:3px}
@@ -208,8 +210,8 @@ footer a:hover{border-color:#ffffff}
 
 <header class="topbar">
   <div class="wrap topbar-in">
-    <img class="brandmark" src="logo-mark.png" alt="WispTrust logo">
-    <div class="brandtext"><span class="brandname">WispTrust<sup style="font-size:.42em;vertical-align:super">™</sup></span><span class="brandsub">VERIFIED SECURITY PLANNING</span></div>
+    <a class="brandhome" href="/" aria-label="WispTrust — back to the homepage"><img class="brandmark" src="logo-mark.png" alt="WispTrust logo">
+    <span class="brandtext"><span class="brandname">WispTrust<sup style="font-size:.42em;vertical-align:super">™</sup></span><span class="brandsub">VERIFIED SECURITY PLANNING</span></span></a>
     <div class="brandright">Operated by MVP Forge LLC</div>
   </div>
 </header>

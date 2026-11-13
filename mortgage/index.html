@@ -16,6 +16,8 @@ body{margin:0;background:linear-gradient(180deg,var(--bg-2),var(--bg));color:#ff
 .brandstrip{background:#fff;border-bottom:1px solid #dfe6ee}
 .strip-in{max-width:1060px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:10px}
 .strip-mark{height:38px;width:auto;display:block}
+  .brandhome{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;cursor:pointer}
+  .brandhome:focus-visible{outline:3px solid #f2b705;outline-offset:2px}
 .strip-text{line-height:1}
 .strip-name{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.4rem;font-weight:700;color:#14232f}
 .strip-sub{display:block;font-size:.56rem;letter-spacing:.22em;color:#2e5d43;font-weight:700;margin-top:2px}
@@ -59,8 +61,8 @@ footer .disc{font-weight:800;color:#fff;margin:14px 0 6px}
 <body>
 <div class="brandstrip">
   <div class="strip-in">
-    <img class="strip-mark" src="../logo-mark.png" alt="WispTrust logo">
-    <div class="strip-text"><span class="strip-name">WispTrust<sup style="font-size:.42em;vertical-align:super">™</sup></span><span class="strip-sub">VERIFIED SECURITY PLANNING</span></div>
+    <a class="brandhome" href="/" aria-label="WispTrust — back to the homepage"><img class="strip-mark" src="../logo-mark.png" alt="WispTrust logo">
+    <span class="strip-text"><span class="strip-name">WispTrust<sup style="font-size:.42em;vertical-align:super">™</sup></span><span class="strip-sub">VERIFIED SECURITY PLANNING</span></span></a>
     <div class="strip-right">Operated by MVP Forge LLC</div>
   </div>
 </div>
