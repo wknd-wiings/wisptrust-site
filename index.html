@@ -80,6 +80,15 @@ a{color:inherit}
 .stat{background:var(--card);border:1px solid var(--line-soft);border-radius:14px;padding:16px 18px}
 .stat b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.5rem;line-height:1;color:var(--text);font-weight:600}
 .stat span{display:block;margin-top:6px;font-size:.86rem;color:var(--muted);line-height:1.45}
+/* READ-THE-RULE BOX (Douglas's order, 2026-11-13): one more white box directly under the "Dec 31" stat, the whole box a pressable link to the official FTC Safeguards Rule text on eCFR, so a prospect can read the rule before pricing. */
+.hero-rule{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:820px;margin:14px auto 0;text-align:left}
+.stat-link{grid-column:2;display:block;text-decoration:none;background:linear-gradient(180deg,#ffffff,#eef4fb);border:1px solid var(--line-soft);border-radius:14px;padding:16px 18px;min-height:44px;box-shadow:inset 0 1px 0 #ffffff,0 6px 16px rgba(10,20,30,.28);transition:transform .12s ease,box-shadow .12s ease,filter .12s ease}
+.stat-link:hover{filter:brightness(1.03);transform:translateY(-1px)}
+.stat-link:active{transform:translateY(1px);box-shadow:inset 0 1px 0 #ffffff,0 2px 6px rgba(10,20,30,.28)}
+.stat-link:focus-visible{outline:3px solid #e8c268;outline-offset:2px}
+.stat-link b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.5rem;line-height:1;color:var(--text);font-weight:600}
+.stat-link span{display:block;margin-top:6px;font-size:.86rem;color:var(--muted);line-height:1.45}
+@media (max-width:900px){.hero-rule{gap:8px;margin-top:8px}.stat-link{padding:10px 12px}.stat-link b{font-size:1.15rem}.stat-link span{font-size:.78rem}}
 
 /* sections */
 section{padding:78px 0}
@@ -226,6 +235,9 @@ footer a:hover{border-color:#ffffff}
       <div class="stat"><b>16 CFR 314</b><span>Built clause-by-clause against the FTC Safeguards Rule, from IRS Publication 5708's outline.</span></div>
       <div class="stat"><b>Dec 31</b><span>Every PTIN expires December 31. Renewal asks about the plan — the plan has to exist first.</span></div>
       <div class="stat"><b>Zero</b><span>Client data, returns, or passwords ever requested, received, or held. Ever.</span></div>
+    </div>
+    <div class="hero-rule">
+      <a class="stat-link" href="https://www.ecfr.gov/current/title-16/chapter-I/subchapter-C/part-314" target="_blank" rel="noopener" aria-label="Read the FTC Safeguards Rule, 16 CFR Part 314 — full official text on eCFR (opens in a new tab)"><b>Read the rule yourself</b><span>The FTC Safeguards Rule — 16 CFR Part 314, the full official text (about 10 pages). Read it before you decide.</span></a>
     </div>
   </div>
 </div>
@@ -374,12 +386,12 @@ footer a:hover{border-color:#ffffff}
   <div class="wrap">
     <p class="kicker">How it works</p>
     <h2>Four steps, about 30 minutes of your time.</h2>
-    <p class="sub">Your only job is the questionnaire. Your intake is personally reviewed by a Client Verification Specialist in-house, and your plan is delivered within two business days (Monday–Thursday) of your submission.</p>
+    <p class="sub">Your only job is the questionnaire. Your intake is personally reviewed by a Client Verification Specialist in-house, and your plan is delivered within 24 to 48 hours of your submission.</p>
 
     <div class="steps">
       <div class="step"><div class="step-no">1</div><div><h3>Questionnaire — about 30 minutes</h3><p>Operational facts only: staff, software, devices, vendors, office setup — answered firsthand, by whoever knows each part of your firm. The form itself tells you what never to send — no client data, no credentials. When you submit, your confirmation is instant.</p></div></div>
-      <div class="step"><div class="step-no">2</div><div><h3>Reviewed by a Client Verification Specialist — within 1 business day</h3><p>Your intake is personally reviewed by a Client Verification Specialist — a person, not a program — who checks every answer we received against the Safeguards Rule and your firm's own facts. If anything needs clarifying, we reach out by email. Nothing unconfirmed is written into your plan as fact; it goes on the gap list with a fix and a date.</p></div></div>
-      <div class="step"><div class="step-no">3</div><div><h3>Plan built from your confirmed facts</h3><p>We write your plan around your firm — the plan itself, the incident response plan, the evidence binder, and your gap list — and deliver it within two business days of your submission. A Friday submission is delivered by Tuesday.</p></div></div>
+      <div class="step"><div class="step-no">2</div><div><h3>Reviewed by a Client Verification Specialist — within 24 to 48 hours</h3><p>Your intake is personally reviewed by a Client Verification Specialist — a person, not a program — who checks every answer we received against the Safeguards Rule and your firm's own facts. If anything needs clarifying, we reach out by email. Nothing unconfirmed is written into your plan as fact; it goes on the gap list with a fix and a date.</p></div></div>
+      <div class="step"><div class="step-no">3</div><div><h3>Plan built from your confirmed facts</h3><p>We write your plan around your firm — the plan itself, the incident response plan, the evidence binder, and your gap list — and deliver it within 24 to 48 hours of your submission.</p></div></div>
       <div class="step"><div class="step-no">4</div><div><h3>Sign &amp; adopt</h3><p>You review the finished plan and sign its adoption page as your firm's Qualified Individual — that's what puts it in force. If you choose Safeguards Year, the annual review cycle starts from your signing.</p></div></div>
     </div>
 
@@ -453,7 +465,7 @@ footer a:hover{border-color:#ffffff}
 
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">How long does it take? <span class="chev">+</span></button>
-        <div class="faq-a"><p>Your time: about 30 minutes on the questionnaire — there is no call. Your submission confirmation is instant. A Client Verification Specialist reviews your intake within one business day, and your plan is delivered within two business days of submission — business days are Monday–Thursday, so a Friday submission is delivered by Tuesday. If anything needs clarifying, we email you within that first business day, and the delivery clock resumes when you answer. Then you sign the plan's adoption page. That's the whole timeline.</p></div>
+        <div class="faq-a"><p>Your time: about 30 minutes on the questionnaire — there is no call. Your submission confirmation is instant. A Client Verification Specialist reviews your intake within 24 to 48 hours, and your plan is delivered within 24 to 48 hours of submission. If anything needs clarifying, we email you within that same window, and the delivery clock resumes when you answer. Then you sign the plan's adoption page. That's the whole timeline.</p></div>
       </div>
 
       <div class="faq-item">
